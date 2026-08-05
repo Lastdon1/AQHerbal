@@ -91,7 +91,7 @@ export default function CategoryGrid() {
 
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-12">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
 
 
       <div className="mb-8 text-center">
@@ -189,7 +189,7 @@ export default function CategoryGrid() {
   className="
     group
     relative
-    min-w-[210px]
+    min-w-[160px] sm:min-w-[190px] lg:min-w-[210px]
     overflow-hidden
     rounded-xl
     bg-white
@@ -229,8 +229,10 @@ export default function CategoryGrid() {
     mx-auto
     mb-3
     flex
-    h-24
-    w-24
+    h-20
+w-20
+sm:h-24
+sm:w-24
     items-center
     justify-center
     rounded-full
@@ -247,8 +249,10 @@ export default function CategoryGrid() {
                   width={90}
                   height={90}
                   className="
-  h-20
-  w-20
+  h-16
+w-16
+sm:h-20
+sm:w-20
   object-contain
   transition-transform
   duration-500

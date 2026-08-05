@@ -83,11 +83,11 @@ const filteredProducts = products.filter((product) =>
           {/* Account */}
           <Link
   href="/login"
-  className="hidden lg:flex items-center gap-2 text-gray-700 transition hover:text-green-700"
+  className="flex items-center text-gray-700 transition hover:text-green-700"
 >
   <User size={22} />
 
-  <div className="leading-tight text-left">
+  <div className="hidden lg:block leading-tight text-left">
     <p className="text-xs text-gray-500">Hello</p>
     <p className="text-sm font-medium">Account</p>
   </div>
@@ -125,6 +125,103 @@ const filteredProducts = products.filter((product) =>
     <p className="text-sm font-semibold">Rs 0.00</p>
   </div>
 </Link>
+
+        </div>
+
+      </div>
+      {/* Mobile Search */}
+
+      <div className="px-6 pb-4 lg:hidden">
+
+        <div className="relative">
+
+          {search && (
+            <div className="
+              absolute
+              top-12
+              left-0
+              z-50
+              w-full
+              rounded-xl
+              border
+              bg-white
+              shadow-lg
+            ">
+
+              {filteredProducts.length > 0 ? (
+
+                filteredProducts.map((product) => (
+
+                  <Link
+                    key={product.id}
+                    href={`/product/${product.slug}`}
+                    onClick={() => setSearch("")}
+                    className="
+                      block
+                      px-5
+                      py-3
+                      text-sm
+                      hover:bg-green-50
+                    "
+                  >
+                    {product.name}
+                  </Link>
+
+                ))
+
+              ) : (
+
+                <p className="px-5 py-3 text-sm text-gray-500">
+                  No products found
+                </p>
+
+              )}
+
+            </div>
+          )}
+
+
+          <input
+            type="text"
+            value={search}
+            onChange={(e)=>setSearch(e.target.value)}
+            placeholder="Search products..."
+            className="
+              h-10
+              w-full
+              rounded-full
+              border
+              border-gray-300
+              px-5
+              pr-12
+              text-sm
+              outline-none
+              focus:border-green-700
+            "
+          />
+
+
+          <button
+            className="
+              absolute
+              right-1
+              top-1/2
+              flex
+              h-8
+              w-8
+              -translate-y-1/2
+              items-center
+              justify-center
+              rounded-full
+              bg-green-700
+              text-white
+            "
+          >
+
+            <Search size={18}/>
+
+          </button>
+
 
         </div>
 
