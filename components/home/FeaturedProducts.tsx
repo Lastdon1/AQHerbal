@@ -1,97 +1,66 @@
-import ProductCard from "../products/ProductCard";
-
+import ProductCard from "../product/ProductCard";
 
 const products = [
   {
-    name: "Black Seed Oil",
+    slug: "black-seed-oil",
+    name: "Black Seed Oil Premium",
     image: "/products/black-seed-oil.png",
-    price: "Rs. 1,250",
+    price: 1450,
+    oldPrice: 1650,
     rating: 5,
     description:
-      "Premium black seed oil inspired by traditional wellness practices."
+      "A premium natural oil traditionally used for daily wellness.",
   },
   {
-    name: "Honey",
+    slug: "natural-honey",
+    name: "Pure Sidr Honey",
     image: "/products/honey.png",
-    price: "Rs. 1,850",
+    price: 2200,
+    oldPrice: 2500,
     rating: 5,
     description:
-      "Pure natural honey selected for quality and everyday wellness."
+      "Premium quality honey selected for natural goodness.",
   },
   {
-    name: "Moringa Powder",
+    slug: "moringa-powder",
+    name: "Moringa Superfood Powder",
     image: "/products/moringa.png",
-    price: "Rs. 950",
+    price: 1100,
+    oldPrice: 1300,
     rating: 5,
     description:
-      "Nutrient-rich moringa powder for natural daily nutrition."
+      "Nutrient-rich herbal powder for everyday nutrition.",
   },
   {
-    name: "Olive Oil",
+    slug: "olive-oil",
+    name: "Extra Virgin Olive Oil",
     image: "/products/olive-oil.png",
-    price: "Rs. 1,450",
+    price: 1700,
+    oldPrice: 1900,
     rating: 5,
     description:
-      "Premium olive oil inspired by traditional healthy living."
+      "Natural olive oil inspired by traditional wellness.",
   },
 ];
 
-
 export default function FeaturedProducts() {
-
   return (
-
-    <section className="bg-gray-50 py-20">
-
+    <section className="py-20">
       <div className="mx-auto max-w-7xl px-6">
 
-
         {/* Heading */}
+        <div className="mb-12 text-center">
+          <h2 className="text-4xl font-bold text-green-800">
+            Featured Products
+          </h2>
 
-        <div className="relative mb-12">
-
-          <div className="text-center">
-
-            <h2 className="
-              text-4xl
-              font-bold
-              text-green-800
-            ">
-              Featured Products
-            </h2>
-
-
-            <p className="
-              mt-3
-              text-gray-600
-            ">
-              Discover our most popular herbal products.
-            </p>
-
-          </div>
-
-
-          <button
-            className="
-              absolute
-              right-0
-              top-2
-              font-semibold
-              text-green-700
-              transition
-              hover:text-green-900
-            "
-          >
-            View All →
-          </button>
-
-
+          <p className="mt-3 text-gray-600">
+            Explore our premium herbal wellness collection.
+          </p>
         </div>
 
 
-
-        {/* Product Grid */}
-
+        {/* Products */}
         <div
           className="
             grid
@@ -101,27 +70,21 @@ export default function FeaturedProducts() {
             lg:grid-cols-4
           "
         >
-
           {products.map((product) => (
-
             <ProductCard
-              key={product.name}
+              key={product.slug}
+              slug={product.slug}
               name={product.name}
               image={product.image}
               price={product.price}
+              oldPrice={product.oldPrice}
               rating={product.rating}
-               description={product.description}
+              description={product.description}
             />
-
           ))}
-
-
         </div>
 
-
       </div>
-
     </section>
-
   );
 }

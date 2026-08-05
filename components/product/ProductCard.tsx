@@ -1,17 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface ProductCardProps {
+  slug: string;
   name: string;
   image: string;
-  price: string;
+  price: number;
   description?: string;
-  oldPrice?: string;
+  oldPrice?: number;
   rating?: number;
-  
 }
 
-
 export default function ProductCard({
+  slug,
   name,
   image,
   price,
@@ -19,9 +20,7 @@ export default function ProductCard({
   oldPrice,
   rating = 5,
 }: ProductCardProps) {
-
   return (
-
     <div
       className="
         group
@@ -33,9 +32,7 @@ export default function ProductCard({
         hover:shadow-lg
       "
     >
-
       {/* Product Image */}
-
       <div
         className="
           relative
@@ -46,25 +43,24 @@ export default function ProductCard({
           bg-green-50
         "
       >
-
-        <Image
-          src={image}
-          alt={name}
-          width={220}
-          height={220}
-          className="
-            h-52
-            w-52
-            object-contain
-            transition
-            duration-300
-            group-hover:scale-105
-          "
-        />
-
+        <Link href={`/product/${slug}`}>
+          <Image
+            src={image}
+            alt={name}
+            width={220}
+            height={220}
+            className="
+              h-52
+              w-52
+              object-contain
+              transition
+              duration-300
+              group-hover:scale-105
+            "
+          />
+        </Link>
 
         {/* Wishlist */}
-
         <button
           className="
             absolute
@@ -82,44 +78,34 @@ export default function ProductCard({
         >
           ♡
         </button>
-
-
       </div>
 
-
-
       {/* Product Details */}
-
       <div className="p-5">
 
-
         {/* Rating */}
-
         <div className="text-sm text-yellow-500">
           {"★".repeat(rating)}
         </div>
 
-
-
         {/* Name */}
-
-        <h3
-          className="
-            mt-2
-            text-lg
-            font-semibold
-            text-gray-900
-          "
-        >
-          {name}
-        </h3>
-
-
+        <Link href={`/product/${slug}`}>
+          <h3
+            className="
+              mt-2
+              text-lg
+              font-semibold
+              text-gray-900
+              transition
+              hover:text-green-700
+            "
+          >
+            {name}
+          </h3>
+        </Link>
 
         {/* Description */}
-
         {description && (
-
           <p
             className="
               mt-2
@@ -131,13 +117,9 @@ export default function ProductCard({
           >
             {description}
           </p>
-
         )}
 
-
-
         {/* Price */}
-
         <div
           className="
             mt-4
@@ -146,7 +128,6 @@ export default function ProductCard({
             gap-2
           "
         >
-
           <span
             className="
               text-xl
@@ -154,12 +135,10 @@ export default function ProductCard({
               text-green-700
             "
           >
-            {price}
+            Rs. {price.toLocaleString()}
           </span>
 
-
           {oldPrice && (
-
             <span
               className="
                 text-sm
@@ -167,17 +146,12 @@ export default function ProductCard({
                 line-through
               "
             >
-              {oldPrice}
+              Rs. {oldPrice.toLocaleString()}
             </span>
-
           )}
-
         </div>
 
-
-
         {/* Add Cart Button */}
-
         <button
           className="
             mt-5
@@ -193,11 +167,7 @@ export default function ProductCard({
           Add to Cart
         </button>
 
-
       </div>
-
-
     </div>
-
   );
 }

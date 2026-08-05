@@ -1,83 +1,64 @@
-import ProductCard from "../products/ProductCard";
-
+import ProductCard from "../product/ProductCard";
 
 const products = [
   {
+    slug: "black-seed-oil",
     name: "Black Seed Oil Premium",
     image: "/products/black-seed-oil.png",
-    price: "Rs. 1,450",
-    oldPrice: "Rs. 1,650",
+    price: 1450,
+    oldPrice: 1650,
     rating: 5,
     description:
-      "A premium natural oil traditionally used for daily wellness."
+      "A premium natural oil traditionally used for daily wellness.",
   },
   {
+    slug: "natural-honey",
     name: "Pure Sidr Honey",
     image: "/products/honey.png",
-    price: "Rs. 2,200",
-    oldPrice: "Rs. 2,500",
+    price: 2200,
+    oldPrice: 2500,
     rating: 5,
     description:
-      "Premium quality honey selected for natural goodness."
+      "Premium quality honey selected for natural goodness.",
   },
   {
+    slug: "moringa-powder",
     name: "Moringa Superfood Powder",
     image: "/products/moringa.png",
-    price: "Rs. 1,100",
-    oldPrice: "Rs. 1,300",
+    price: 1100,
+    oldPrice: 1300,
     rating: 5,
     description:
-      "Nutrient-rich herbal powder for everyday nutrition."
+      "Nutrient-rich herbal powder for everyday nutrition.",
   },
   {
+    slug: "olive-oil",
     name: "Extra Virgin Olive Oil",
     image: "/products/olive-oil.png",
-    price: "Rs. 1,700",
-    oldPrice: "Rs. 1,900",
+    price: 1700,
+    oldPrice: 1900,
     rating: 5,
     description:
-      "Natural olive oil inspired by traditional wellness."
+      "Natural olive oil inspired by traditional wellness.",
   },
 ];
 
-
 export default function BestSellers() {
-
   return (
-
     <section className="bg-gray-50 py-20">
-
       <div className="mx-auto max-w-7xl px-6">
 
-
         {/* Heading */}
-
         <div className="relative mb-12">
-
           <div className="text-center">
-
-            <h2
-              className="
-                text-4xl
-                font-bold
-                text-green-800
-              "
-            >
+            <h2 className="text-4xl font-bold text-green-800">
               Best Sellers
             </h2>
 
-
-            <p
-              className="
-                mt-3
-                text-gray-600
-              "
-            >
+            <p className="mt-3 text-gray-600">
               Customer favourites trusted for natural wellness.
             </p>
-
           </div>
-
 
           <button
             className="
@@ -92,14 +73,10 @@ export default function BestSellers() {
           >
             View All →
           </button>
-
-
         </div>
 
 
-
         {/* Products */}
-
         <div
           className="
             grid
@@ -109,11 +86,10 @@ export default function BestSellers() {
             lg:grid-cols-4
           "
         >
-
           {products.map((product) => (
-
             <ProductCard
-              key={product.name}
+              key={product.slug}
+              slug={product.slug}
               name={product.name}
               image={product.image}
               price={product.price}
@@ -121,17 +97,10 @@ export default function BestSellers() {
               rating={product.rating}
               description={product.description}
             />
-
           ))}
-
-
         </div>
 
-
       </div>
-
-
     </section>
-
   );
 }
