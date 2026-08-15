@@ -139,8 +139,6 @@ export async function GET(
         p.is_home_nuskhajat,
         p.is_home_murabba,
 
-        p.sort_order,
-
         p.created_at,
         p.updated_at,
 
@@ -394,10 +392,6 @@ export async function PUT(
 
     /* --------------------------------------------------------
        CHECK PRODUCT EXISTS + LOCK IT
-
-       IMPORTANT:
-       sort_order is deliberately NOT changed here.
-       Edit Product does not control product display order.
     -------------------------------------------------------- */
 
     const existingProduct = await client.query(
@@ -512,9 +506,6 @@ export async function PUT(
 
     /* --------------------------------------------------------
        UPDATE PRODUCT
-
-       IMPORTANT:
-       sort_order is intentionally NOT included.
     -------------------------------------------------------- */
 
     const productResult = await client.query(
@@ -968,17 +959,13 @@ export async function DELETE(
 
     /* --------------------------------------------------------
        FIND + LOCK PRODUCT
-
-       sort_order is retained here because deleting a product
-       still needs to close the ordering gap.
     -------------------------------------------------------- */
 
     const productResult = await client.query(
       `
       SELECT
         id,
-        name,
-        sort_order
+        name
       FROM products
       WHERE id = $1
       FOR UPDATE
@@ -998,28 +985,6 @@ export async function DELETE(
         }
       );
     }
-
-    const deletedSortOrder =
-      Number(
-        productResult.rows[0].sort_order
-      );
-
-    /* --------------------------------------------------------
-       LOCK PRODUCTS THAT WILL BE SHIFTED
-    -------------------------------------------------------- */
-
-    await client.query(
-      `
-      SELECT id
-      FROM products
-      WHERE sort_order > $1
-      ORDER BY
-        sort_order ASC,
-        id ASC
-      FOR UPDATE
-      `,
-      [deletedSortOrder]
-    );
 
     /* --------------------------------------------------------
        DELETE HEALTH CONCERN RELATIONSHIPS
@@ -1069,8 +1034,7 @@ export async function DELETE(
 
         RETURNING
           id,
-          name,
-          sort_order
+          name
         `,
         [productId]
       );
@@ -1088,24 +1052,6 @@ export async function DELETE(
         }
       );
     }
-
-    /* --------------------------------------------------------
-       CLOSE ORDERING GAP
-    -------------------------------------------------------- */
-
-    await client.query(
-      `
-      UPDATE products
-      SET
-        sort_order =
-          sort_order - 1,
-        updated_at =
-          CURRENT_TIMESTAMP
-      WHERE
-        sort_order > $1
-      `,
-      [deletedSortOrder]
-    );
 
     /* --------------------------------------------------------
        COMMIT
