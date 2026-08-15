@@ -1,15 +1,18 @@
-
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, Suspense, useState } from "react";
+import {
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
-export default function CustomerLoginPage() {
+function CustomerLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const registered = searchParams.get("registered");
+  const registered =
+    searchParams.get("registered");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,7 +66,6 @@ export default function CustomerLoginPage() {
 
       /*
        * Client-side navigation is enough here.
-       * No router.refresh() is necessary.
        */
       router.push("/account");
     } catch (error) {
@@ -84,6 +86,7 @@ export default function CustomerLoginPage() {
     <main className="min-h-screen bg-white">
       <div className="mx-auto flex min-h-[calc(100vh-120px)] max-w-md items-center px-4 py-12">
         <div className="w-full rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+
           {/* Heading */}
 
           <div className="mb-8 text-center">
@@ -232,9 +235,29 @@ export default function CustomerLoginPage() {
               نیا اکاؤنٹ بنائیں
             </Link>
           </div>
+
         </div>
       </div>
     </main>
   );
 }
 
+export default function CustomerLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-white">
+          <div className="mx-auto flex min-h-[calc(100vh-120px)] max-w-md items-center px-4 py-12">
+            <div className="w-full rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+              <div className="text-center text-sm text-gray-500">
+                Loading...
+              </div>
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <CustomerLoginForm />
+    </Suspense>
+  );
+}
