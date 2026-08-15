@@ -1,89 +1,133 @@
-import ProductCard from "../product/ProductCard";
+import Link from "next/link";
+import ProductCard from "@/components/product/ProductCard";
+import type { FeaturedProduct } from "@/lib/featured-products";
 
-const products = [
-  {
-    slug: "black-seed-oil",
-    name: "Black Seed Oil Premium",
-    image: "/products/black-seed-oil.png",
-    price: 1450,
-    oldPrice: 1650,
-    rating: 5,
-    description:
-      "A premium natural oil traditionally used for daily wellness.",
-  },
-  {
-    slug: "natural-honey",
-    name: "Pure Sidr Honey",
-    image: "/products/honey.png",
-    price: 2200,
-    oldPrice: 2500,
-    rating: 5,
-    description:
-      "Premium quality honey selected for natural goodness.",
-  },
-  {
-    slug: "moringa-powder",
-    name: "Moringa Superfood Powder",
-    image: "/products/moringa.png",
-    price: 1100,
-    oldPrice: 1300,
-    rating: 5,
-    description:
-      "Nutrient-rich herbal powder for everyday nutrition.",
-  },
-  {
-    slug: "olive-oil",
-    name: "Extra Virgin Olive Oil",
-    image: "/products/olive-oil.png",
-    price: 1700,
-    oldPrice: 1900,
-    rating: 5,
-    description:
-      "Natural olive oil inspired by traditional wellness.",
-  },
-];
+type Props = {
+  products: FeaturedProduct[];
+};
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({
+  products,
+}: Props) {
   return (
-    <section className="py-20">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="mx-auto max-w-7xl px-6 py-12">
+      {/* =====================================================
+          SECTION HEADER
+      ====================================================== */}
 
-        {/* Heading */}
-        <div className="mb-12 text-center">
-          <h2 className="text-4xl font-bold text-green-800">
-            Featured Products
-          </h2>
+      <div className="relative mb-10 text-center">
+        <h2 className="text-3xl font-bold text-green-800">
+          منتخب مصنوعات
+        </h2>
 
-          <p className="mt-3 text-gray-600">
-            Explore our premium herbal wellness collection.
+        <p className="mt-1 text-lg text-gray-700">
+          Featured Products
+        </p>
+
+        {/* Desktop View All */}
+
+        <Link
+          href="/shop"
+          className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-sm font-semibold text-green-700 transition hover:text-green-800 sm:inline-flex"
+        >
+          View All Products →
+        </Link>
+      </div>
+
+      {/* =====================================================
+          PRODUCTS
+      ====================================================== */}
+
+      {products.length === 0 ? (
+        <div className="rounded-xl border border-gray-200 bg-white px-6 py-12 text-center">
+          <p className="text-sm text-gray-500">
+            No products available.
           </p>
         </div>
+      ) : (
+        <>
+          {/* =================================================
+              MOBILE
+              Horizontal swipe
+          ================================================== */}
 
+          <div
+            className="
+              flex
+              gap-4
+              overflow-x-auto
+              pb-2
+              touch-pan-x
+              [-ms-overflow-style:none]
+              [scrollbar-width:none]
+              [&::-webkit-scrollbar]:hidden
+              sm:hidden
+            "
+          >
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="
+                  w-[calc((100vw-64px)/2)]
+                  min-w-[145px]
+                  max-w-[170px]
+                  shrink-0
+                "
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
 
-        {/* Products */}
-        <div
+          {/* =================================================
+              TABLET / DESKTOP
+          ================================================== */}
+
+          <div
+            className="
+              hidden
+              sm:grid
+              sm:grid-cols-2
+              sm:gap-6
+              lg:grid-cols-4
+            "
+          >
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* =====================================================
+          MOBILE VIEW ALL
+      ====================================================== */}
+
+      <div className="mt-8 text-center sm:hidden">
+        <Link
+          href="/shop"
           className="
-            grid
-            grid-cols-1
-            gap-8
-            sm:grid-cols-2
-            lg:grid-cols-4
+            inline-flex
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-green-700
+            px-6
+            py-3
+            text-sm
+            font-semibold
+            text-green-700
+            transition
+            hover:bg-green-700
+            hover:text-white
           "
         >
-          {products.map((product) => (
-            <ProductCard
-              key={product.slug}
-              slug={product.slug}
-              name={product.name}
-              image={product.image}
-              price={product.price}
-              oldPrice={product.oldPrice}
-              rating={product.rating}
-              description={product.description}
-            />
-          ))}
-        </div>
-
+          View All Products
+        </Link>
       </div>
     </section>
   );

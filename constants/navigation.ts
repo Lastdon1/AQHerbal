@@ -3,13 +3,43 @@ export interface NavItem {
   href: string;
 }
 
-export const navigation: NavItem[] = [
-  { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "Categories", href: "/categories" },
-  { name: "Health Concerns", href: "/health-concerns" },
-  { name: "Knowledge Center", href: "/knowledge-center" },
-  { name: "Blog", href: "/blog" },
-  { name: "About Us", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]; 
+
+export const navigation = [
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "Store",
+    href: "/store",
+  },
+  {
+    name: "Health Concerns",
+    href: "/health-concerns",
+  },
+  {
+    name: "Herbs",
+    href: "/herbs",
+  },
+  {
+    name: "Murabba Jat",
+    href: "/murabba-jat",
+  },
+  {
+    name: "Nuskhajat",
+    href: "/nuskhajat",
+  },
+  {
+    name: "Mashora",
+    href: "/mashora",
+  },
+  {
+    name: "About Us",
+    href: "/about",
+  },
+  {
+    name: "Contact Us",
+    href: "/contact",
+  },
+];
+

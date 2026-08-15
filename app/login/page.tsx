@@ -1,51 +1,118 @@
-export default function LoginPage() {
-  return (
-    <main className="mx-auto flex min-h-[70vh] max-w-md items-center justify-center px-6 pt-16">
-      <div className="w-full rounded-2xl border bg-white p-8 shadow-sm">
-        <h1 className="mb-6 text-center text-3xl font-semibold">
-          Login
-        </h1>
+"use client";
 
-        <form className="space-y-4">
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function LoginPage() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Invalid email or password.");
+        return;
+      }
+
+      router.push("/admin");
+      router.refresh();
+    } catch {
+      setError("Unable to connect. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-green-800">
+            ISACO CMS
+          </h1>
+
+          <p className="mt-2 text-sm text-gray-500">
+            Admin Login
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
+
             <input
+              id="email"
               type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="Enter your email"
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2 focus:ring-green-600"
+              required
+              autoComplete="email"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
+
             <input
+              id="password"
               type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
               placeholder="Enter your password"
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2 focus:ring-green-600"
+              required
+              autoComplete="current-password"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
             />
           </div>
+
+          {error && (
+            <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-green-700 py-3 font-medium text-white hover:bg-green-800"
+            disabled={loading}
+            className="w-full rounded-lg bg-green-700 py-3 font-medium text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
-  New customer?{" "}
-  <a
-    href="/register"
-    className="font-medium text-green-700 hover:text-green-900 hover:underline"
-  >
-    Create an account
-  </a>
-</p>
       </div>
     </main>
   );

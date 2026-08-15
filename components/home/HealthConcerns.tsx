@@ -1,121 +1,175 @@
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
+import type { HealthConcern } from "@/lib/health-concerns";
 
-const concerns = [
-  {
-    title: "Digestive Health",
-    description: "Support healthy digestion",
-    image: "/health-concerns/digestive-health.png",
-  },
-  {
-    title: "Immunity",
-    description: "Strengthen natural defense",
-    image: "/health-concerns/immunity.png",
-  },
-  {
-    title: "Men's Health",
-    description: "Natural wellness support",
-    image: "/health-concerns/mens-health.png",
-  },
-  {
-    title: "Women's Health",
-    description: "Balanced wellness care",
-    image: "/health-concerns/womens-health.png",
-  },
-  {
-    title: "Joint Care",
-    description: "Support bones & joints",
-    image: "/health-concerns/joint-care.png",
-  },
-  {
-    title: "Skin & Hair",
-    description: "Natural beauty care",
-    image: "/health-concerns/skin-hair.png",
-  },
-];
+type Props = {
+  healthConcerns: HealthConcern[];
+};
 
+export default function HealthConcerns({
+  healthConcerns,
+}: Props) {
+  const sliderRef =
+    useRef<HTMLDivElement>(null);
 
-export default function HealthConcerns() {
+  const [showLeft, setShowLeft] =
+    useState(false);
 
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const [showRight, setShowRight] =
+    useState(false);
 
-  const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(true);
-
+  /* ============================================================
+     UPDATE ARROWS
+  ============================================================ */
 
   const updateArrows = () => {
+    const slider =
+      sliderRef.current;
 
-    if (!sliderRef.current) return;
+    if (!slider) {
+      return;
+    }
 
     const {
       scrollLeft,
       scrollWidth,
       clientWidth,
-    } = sliderRef.current;
+    } = slider;
 
-
-    setShowLeft(scrollLeft > 10);
+    setShowLeft(
+      scrollLeft > 10
+    );
 
     setShowRight(
-      scrollLeft < scrollWidth - clientWidth - 10
+      scrollLeft <
+        scrollWidth -
+          clientWidth -
+          10
     );
   };
 
+  /* ============================================================
+     SLIDE
+  ============================================================ */
 
-  const slide = (direction: "left" | "right") => {
+  const slide = (
+    direction: "left" | "right"
+  ) => {
+    const slider =
+      sliderRef.current;
 
-    sliderRef.current?.scrollBy({
-      left: direction === "right" ? 300 : -300,
+    if (!slider) {
+      return;
+    }
+
+    slider.scrollBy({
+      left:
+        direction === "right"
+          ? 300
+          : -300,
       behavior: "smooth",
     });
 
-    setTimeout(updateArrows, 400);
+    /*
+     * Give the browser a moment to update the
+     * scroll position before checking the arrows.
+     */
+    window.setTimeout(
+      updateArrows,
+      350
+    );
   };
 
+  /* ============================================================
+     INITIAL ARROW STATE + RESIZE
+  ============================================================ */
+
+  useEffect(() => {
+    const frame =
+      window.requestAnimationFrame(
+        updateArrows
+      );
+
+    const handleResize = () => {
+      updateArrows();
+    };
+
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
+
+    return () => {
+      window.cancelAnimationFrame(
+        frame
+      );
+
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
+    };
+  }, [healthConcerns]);
 
   return (
+    <section
+      id="health-concerns"
+      className="
+        mx-auto
+        max-w-7xl
+        scroll-mt-20
+        px-6
+        py-12
+      "
+    >
+      {/* ========================================================
+          HEADING
+      ========================================================= */}
 
-    <section className="mx-auto max-w-7xl px-6 py-12">
-
-
-      {/* Heading */}
       <div className="mb-10 text-center">
-
         <h2 className="text-3xl font-bold text-green-800">
-          Shop by Health Concerns
+          صحت کے مسائل
         </h2>
 
-        <p className="mt-2 text-sm text-gray-600">
-          Find natural solutions for your wellness needs
+        <p className="mt-1 text-lg text-gray-700">
+          Health Concerns
         </p>
-
       </div>
 
-
-
       <div className="relative">
-
-
-        {/* Left Arrow */}
+        {/* ======================================================
+            LEFT ARROW
+        ======================================================= */}
 
         {showLeft && (
-
           <button
-            onClick={() => slide("left")}
+            type="button"
+            onClick={() =>
+              slide("left")
+            }
+            aria-label="Previous health concerns"
             className="
               absolute
               left-0
               top-1/2
               z-10
-              -translate-y-1/2
               flex
               h-9
               w-9
+              -translate-y-1/2
               items-center
               justify-center
               rounded-full
@@ -126,28 +180,32 @@ export default function HealthConcerns() {
               hover:text-white
             "
           >
-            <ChevronLeft size={18}/>
+            <ChevronLeft
+              size={18}
+            />
           </button>
-
         )}
 
-
-
-        {/* Right Arrow */}
+        {/* ======================================================
+            RIGHT ARROW
+        ======================================================= */}
 
         {showRight && (
-
           <button
-            onClick={() => slide("right")}
+            type="button"
+            onClick={() =>
+              slide("right")
+            }
+            aria-label="Next health concerns"
             className="
               absolute
               right-0
               top-1/2
               z-10
-              -translate-y-1/2
               flex
               h-9
               w-9
+              -translate-y-1/2
               items-center
               justify-center
               rounded-full
@@ -158,118 +216,158 @@ export default function HealthConcerns() {
               hover:text-white
             "
           >
-            <ChevronRight size={18}/>
+            <ChevronRight
+              size={18}
+            />
           </button>
-
         )}
 
-
-
-
-        {/* Circular Health Concerns */}
+        {/* ======================================================
+            HEALTH CONCERNS SLIDER
+        ======================================================= */}
 
         <div
           ref={sliderRef}
           onScroll={updateArrows}
           className="
             flex
-            gap-8
-            overflow-hidden
+            gap-6
+            overflow-x-auto
+            overflow-y-hidden
             scroll-smooth
             px-4
+            pb-2
+            touch-pan-x
+            [-ms-overflow-style:none]
+            [scrollbar-width:none]
+            [&::-webkit-scrollbar]:hidden
           "
         >
-
-
-          {concerns.map((item) => (
-
-            <Link
-              href="#"
-              key={item.title}
-              className="
-                group
-                min-w-[190px]
-                text-center
-                transition-all
-                duration-300
-                hover:-translate-y-2
-              "
-            >
-
-
-              {/* Circle Image */}
-
-              <div
-  className="
-    mx-auto
-    mb-5
-    flex
-    h-40
-    w-40
-    items-center
-    justify-center
-    overflow-hidden
-    rounded-full
-    bg-green-50
-    shadow-md
-    transition-all
-    duration-500
-    group-hover:scale-90
-    group-hover:shadow-xl
-  "
->
-
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={150}
-                  height={150}
-                  className="
-                    h-36
-                    w-36
-                    object-contain
-                  "
-                />
-
-              </div>
-
-
-
-              {/* Title */}
-
-              <h3
-                className="
-                  text-sm
-                  font-semibold
-                  text-gray-900
-                  transition-colors
-                  group-hover:text-green-700
-                "
-              >
-                {item.title}
-              </h3>
-
-
-
-              {/* Description */}
-
-              <p className="mt-1 text-xs text-gray-500">
-                {item.description}
+          {healthConcerns.length === 0 ? (
+            <div className="w-full py-10 text-center">
+              <p className="text-sm text-gray-500">
+                No health concerns available.
               </p>
+            </div>
+          ) : (
+            healthConcerns.map(
+              (item) => (
+                <Link
+                  href={`/health-concern/${item.slug}`}
+                  key={item.id}
+                  className="
+                    group
+                    min-w-[140px]
+                    flex-shrink-0
+                    text-center
+                    transition-transform
+                    duration-200
+                    hover:-translate-y-1
+                    sm:min-w-[170px]
+                    lg:min-w-[190px]
+                  "
+                >
+                  {/* ==========================================
+                      IMAGE
+                  =========================================== */}
 
+                  <div
+                    className="
+                      mx-auto
+                      mb-0
+                      flex
+                      h-40
+                      w-40
+                      items-center
+                      justify-center
+                      transition-transform
+                      duration-200
+                      group-hover:scale-[1.04]
+                    "
+                  >
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={160}
+                        height={160}
+                        sizes="160px"
+                        loading="lazy"
+                        className="
+                          h-40
+                          w-40
+                          object-contain
+                        "
+                      />
+                    ) : (
+                      <div
+                        className="
+                          flex
+                          h-40
+                          w-40
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-gray-100
+                          text-xs
+                          text-gray-400
+                        "
+                      >
+                        No image
+                      </div>
+                    )}
+                  </div>
 
-            </Link>
+                  {/* ==========================================
+                      URDU TITLE
+                  =========================================== */}
 
-          ))}
+                  <p
+                    dir="rtl"
+                    className="
+                      text-lg
+                      font-semibold
+                      leading-tight
+                      text-green-700
+                    "
+                  >
+                    {item.name_urdu}
+                  </p>
 
+                  {/* ==========================================
+                      ENGLISH TITLE
+                  =========================================== */}
 
+                  <h3
+                    className="
+                      mt-1
+                      text-sm
+                      font-medium
+                      text-gray-800
+                      transition-colors
+                      duration-150
+                      group-hover:text-green-700
+                    "
+                  >
+                    {item.name}
+                  </h3>
+
+                  {/* ==========================================
+                      DESCRIPTION
+                  =========================================== */}
+
+                  {item.description && (
+                    <p className="mt-1 text-xs text-gray-500">
+                      {item.description}
+                    </p>
+                  )}
+                </Link>
+              )
+            )
+          )}
         </div>
-
-
       </div>
-
-
     </section>
-
   );
 }
+

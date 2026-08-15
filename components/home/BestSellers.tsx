@@ -1,106 +1,66 @@
-import ProductCard from "../product/ProductCard";
 
-const products = [
-  {
-    slug: "black-seed-oil",
-    name: "Black Seed Oil Premium",
-    image: "/products/black-seed-oil.png",
-    price: 1450,
-    oldPrice: 1650,
-    rating: 5,
-    description:
-      "A premium natural oil traditionally used for daily wellness.",
-  },
-  {
-    slug: "natural-honey",
-    name: "Pure Sidr Honey",
-    image: "/products/honey.png",
-    price: 2200,
-    oldPrice: 2500,
-    rating: 5,
-    description:
-      "Premium quality honey selected for natural goodness.",
-  },
-  {
-    slug: "moringa-powder",
-    name: "Moringa Superfood Powder",
-    image: "/products/moringa.png",
-    price: 1100,
-    oldPrice: 1300,
-    rating: 5,
-    description:
-      "Nutrient-rich herbal powder for everyday nutrition.",
-  },
-  {
-    slug: "olive-oil",
-    name: "Extra Virgin Olive Oil",
-    image: "/products/olive-oil.png",
-    price: 1700,
-    oldPrice: 1900,
-    rating: 5,
-    description:
-      "Natural olive oil inspired by traditional wellness.",
-  },
-];
+"use client";
+
+import Link from "next/link";
+import ProductCard from "@/components/product/ProductCard";
+import { products } from "@/constants/products";
 
 export default function BestSellers() {
   return (
-    <section className="bg-gray-50 py-20">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="mx-auto max-w-7xl px-6 py-12">
 
-        {/* Heading */}
-        <div className="relative mb-12">
-          <div className="text-center">
-            <h2 className="text-4xl font-bold text-green-800">
-              Best Sellers
-            </h2>
+      {/* =====================================================
+          SECTION HEADER
+      ====================================================== */}
 
-            <p className="mt-3 text-gray-600">
-              Customer favourites trusted for natural wellness.
-            </p>
-          </div>
+      <div className="relative mb-10 text-center">
 
-          <button
-            className="
-              absolute
-              right-0
-              top-2
-              font-semibold
-              text-green-700
-              transition
-              hover:text-green-900
-            "
-          >
-            View All →
-          </button>
-        </div>
+        {/* Urdu Heading */}
+        <h2 className="text-3xl font-bold text-green-800">
+          سب سے زیادہ پسند کی جانے والی مصنوعات
+        </h2>
 
+        {/* English Heading */}
+        <p className="mt-1 text-lg text-gray-700">
+          Best Sellers
+        </p>
 
-        {/* Products */}
-        <div
-          className="
-            grid
-            grid-cols-1
-            gap-8
-            sm:grid-cols-2
-            lg:grid-cols-4
-          "
+        {/* Desktop View All */}
+        <Link
+          href="/shop"
+          className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-sm font-semibold text-green-700 transition hover:text-green-800 sm:inline-flex"
         >
-          {products.map((product) => (
-            <ProductCard
-              key={product.slug}
-              slug={product.slug}
-              name={product.name}
-              image={product.image}
-              price={product.price}
-              oldPrice={product.oldPrice}
-              rating={product.rating}
-              description={product.description}
-            />
-          ))}
-        </div>
-
+          View All →
+        </Link>
       </div>
+
+      {/* =====================================================
+          PRODUCT GRID
+      ====================================================== */}
+
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+        {products.slice(0, 4).map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+          />
+        ))}
+      </div>
+
+      {/* =====================================================
+          MOBILE VIEW ALL
+      ====================================================== */}
+
+      <div className="mt-8 text-center sm:hidden">
+        <Link
+          href="/shop"
+          className="inline-flex items-center justify-center rounded-full border border-green-700 px-6 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-700 hover:text-white"
+        >
+          View All Products
+        </Link>
+      </div>
+
     </section>
   );
 }
+

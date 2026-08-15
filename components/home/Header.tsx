@@ -1,210 +1,215 @@
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { Search, User, Heart, ShoppingCart } from "lucide-react";
+import {
+  Search,
+  ShoppingCart,
+  Heart,
+  User,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+
 import { products } from "@/constants/products";
 
-export default function Header() {
-  const [search, setSearch] = useState("");
-const filteredProducts = products.filter((product) =>
-  product.name.toLowerCase().includes(search.toLowerCase())
-);
+/* ============================================================
+   TYPES
+============================================================ */
+
+type SearchLanguage = "en" | "ur";
+
+type SearchAreaProps = {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  language: SearchLanguage;
+  onProductClick: () => void;
+};
+
+/* ============================================================
+   NORMALIZE SEARCH TEXT
+============================================================ */
+
+function normalizeText(text: string = "") {
+  return text
+    .normalize("NFKC")
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+/* ============================================================
+   SEARCH AREA
+============================================================ */
+
+function SearchArea({
+  search,
+  setSearch,
+  language,
+  onProductClick,
+}: SearchAreaProps) {
+  const isUrdu = language === "ur";
+
+  /* ==========================================================
+     SEARCH RESULTS
+  ========================================================== */
+
+  const query = normalizeText(search);
+
+  const results = query
+    ? products.filter((product) => {
+        /* ====================================================
+           URDU SEARCH
+        ==================================================== */
+
+        if (isUrdu) {
+          const urduName = normalizeText(
+            product.nameUrdu || ""
+          );
+
+          const urduDescription = normalizeText(
+            product.descriptionUrdu || ""
+          );
+
+          return (
+            urduName.includes(query) ||
+            urduDescription.includes(query)
+          );
+        }
+
+        /* ====================================================
+           ENGLISH SEARCH
+        ==================================================== */
+
+        const name = normalizeText(
+          product.name || ""
+        );
+
+        const slug = normalizeText(
+          product.slug || ""
+        );
+
+        const category = normalizeText(
+          product.category || ""
+        );
+
+        const description = normalizeText(
+          product.description || ""
+        );
+
+        const healthConcerns = normalizeText(
+          product.healthConcerns?.join(" ") || ""
+        );
+
+        return (
+          name.includes(query) ||
+          slug.includes(query) ||
+          category.includes(query) ||
+          description.includes(query) ||
+          healthConcerns.includes(query)
+        );
+      })
+    : [];
+
+  /* ==========================================================
+     CLEAR SEARCH
+  ========================================================== */
+
+  const clearSearch = () => {
+    setSearch("");
+  };
+
   return (
-    <header className="border-b bg-white">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+    <div className="relative w-full">
 
-        {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center">
-          <Image
-            src="/logos/logo.png"
-            alt="AQ Herbal"
-            width={180}
-            height={70}
-            className="h-14 w-auto object-contain"
-            priority
-          />
-          
-<div className="hidden sm:flex flex-col items-center justify-center leading-none">
-  <span className="text-4xl font-black tracking-widest text-green-800">
-    AQ
-  </span>
+      {/* ======================================================
+          SEARCH INPUT
+      ======================================================= */}
 
-  <span className="mt-1 text-[11px] font-semibold uppercase tracking-[0.35em] text-gray-900">
-    Herbal Store
-  </span>
-</div>
-          
-        </Link>
+      <div className="relative">
 
-        {/* Search */}
-        <div className="hidden lg:flex flex-1 justify-center px-6">
-          <div className="relative w-full max-w-lg">
-            {search && (
-  <div className="absolute top-12 left-0 z-50 w-full rounded-xl border bg-white shadow-lg">
-    {filteredProducts.length > 0 ? (
-      filteredProducts.map((product) => (
-        <Link
-  key={product.id}
-  href={`/product/${product.slug}`}
-  onClick={() => setSearch("")}
-  className="block px-5 py-3 text-sm hover:bg-green-50"
->
-  {product.name}
-</Link>
-      ))
-    ) : (
-      <p className="px-5 py-3 text-sm text-gray-500">
-        No products found
-      </p>
-    )}
-  </div>
-)}
-            <input
-  type="text"
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  placeholder="Search products..."
-  className="h-10 w-full rounded-full border border-gray-300 px-5 pr-12 text-sm outline-none transition focus:border-green-700"
-/>
+        {/* Search Icon */}
 
-            <button
-  className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-green-700 text-white transition hover:bg-green-800"
->
-  <Search size={18} />
-</button>
-          </div>
-        </div>
+        <Search
+          size={18}
+          className={`
+            pointer-events-none
+            absolute
+            top-1/2
+            z-10
+            -translate-y-1/2
+            text-gray-400
 
-        {/* Right Section */}
-        <div className="flex shrink-0 items-center gap-6">
+            ${
+              isUrdu
+                ? "right-4"
+                : "left-4"
+            }
+          `}
+        />
 
-          {/* Account */}
-          <Link
-  href="/login"
-  className="flex items-center text-gray-700 transition hover:text-green-700"
->
-  <User size={22} />
+        {/* ==================================================
+            INPUT
+        =================================================== */}
 
-  <div className="hidden lg:block leading-tight text-left">
-    <p className="text-xs text-gray-500">Hello</p>
-    <p className="text-sm font-medium">Account</p>
-  </div>
-</Link>
-          {/* Wishlist */}
-          <Link
-  href="/wishlist"
-  className="relative text-gray-700 transition hover:text-red-600"
->
-  <Heart
-  size={22}
-  className="transition hover:text-green-700"
-/>
+        <input
+          type="text"
+          value={search}
+          onChange={(event) =>
+            setSearch(event.target.value)
+          }
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+            }
+          }}
+          placeholder={
+            isUrdu
+              ? "مصنوعات تلاش کریں"
+              : "Search products"
+          }
+          dir={isUrdu ? "rtl" : "ltr"}
+          lang={isUrdu ? "ur" : "en"}
+          autoComplete="off"
+          spellCheck={false}
+          className={`
+            h-12
+            w-full
+            rounded-full
+            border
+            border-gray-200
+            bg-gray-50
+            text-sm
+            text-gray-800
+            outline-none
+            transition
 
-  <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-700 text-[10px] font-semibold text-white">
-    0
-  </span>
-</Link>
-          {/* Cart */}
-          <Link
-  href="/cart"
-  className="relative flex items-center gap-2 text-gray-700 transition hover:text-green-700"
->
-  <ShoppingCart
-    size={22}
-    className="transition hover:text-green-700"
-  />
+            focus:border-green-600
+            focus:bg-white
+            focus:ring-2
+            focus:ring-green-100
 
-  <span className="absolute -left-1 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-700 text-[10px] font-semibold text-white">
-    0
-  </span>
+            ${
+              isUrdu
+                ? "pl-12 pr-11 text-right"
+                : "pl-11 pr-12 text-left"
+            }
+          `}
+        />
 
-  <div className="hidden lg:block leading-tight text-left">
-    <p className="text-xs text-gray-500">Cart</p>
-    <p className="text-sm font-semibold">Rs 0.00</p>
-  </div>
-</Link>
+        {/* ==================================================
+            CLEAR BUTTON
+        =================================================== */}
 
-        </div>
-
-      </div>
-      {/* Mobile Search */}
-
-      <div className="px-6 pb-4 lg:hidden">
-
-        <div className="relative">
-
-          {search && (
-            <div className="
-              absolute
-              top-12
-              left-0
-              z-50
-              w-full
-              rounded-xl
-              border
-              bg-white
-              shadow-lg
-            ">
-
-              {filteredProducts.length > 0 ? (
-
-                filteredProducts.map((product) => (
-
-                  <Link
-                    key={product.id}
-                    href={`/product/${product.slug}`}
-                    onClick={() => setSearch("")}
-                    className="
-                      block
-                      px-5
-                      py-3
-                      text-sm
-                      hover:bg-green-50
-                    "
-                  >
-                    {product.name}
-                  </Link>
-
-                ))
-
-              ) : (
-
-                <p className="px-5 py-3 text-sm text-gray-500">
-                  No products found
-                </p>
-
-              )}
-
-            </div>
-          )}
-
-
-          <input
-            type="text"
-            value={search}
-            onChange={(e)=>setSearch(e.target.value)}
-            placeholder="Search products..."
-            className="
-              h-10
-              w-full
-              rounded-full
-              border
-              border-gray-300
-              px-5
-              pr-12
-              text-sm
-              outline-none
-              focus:border-green-700
-            "
-          />
-
-
+        {search && (
           <button
-            className="
+            type="button"
+            onClick={clearSearch}
+            aria-label="Clear search"
+            className={`
               absolute
-              right-1
               top-1/2
               flex
               h-8
@@ -213,19 +218,563 @@ const filteredProducts = products.filter((product) =>
               items-center
               justify-center
               rounded-full
-              bg-green-700
-              text-white
+              text-gray-400
+              transition
+              hover:bg-gray-100
+              hover:text-gray-700
+
+              ${
+                isUrdu
+                  ? "left-3"
+                  : "right-3"
+              }
+            `}
+          >
+            <X size={15} />
+          </button>
+        )}
+
+      </div>
+
+      {/* ======================================================
+          SEARCH RESULTS DROPDOWN
+      ======================================================= */}
+
+      {search.trim() && (
+        <div
+          className="
+            absolute
+            left-0
+            right-0
+            top-full
+            z-[200]
+            mt-2
+            max-h-[420px]
+            overflow-y-auto
+            rounded-2xl
+            border
+            border-gray-100
+            bg-white
+            p-2
+            shadow-2xl
+          "
+        >
+
+          {results.length > 0 ? (
+            <>
+
+              {/* Result Count */}
+
+              <div
+                dir={isUrdu ? "rtl" : "ltr"}
+                className={`
+                  px-3
+                  pb-2
+                  pt-1
+                  text-xs
+                  text-gray-400
+
+                  ${
+                    isUrdu
+                      ? "text-right"
+                      : "text-left"
+                  }
+                `}
+              >
+                {results.length}{" "}
+                {isUrdu
+                  ? "نتائج"
+                  : results.length === 1
+                    ? "result"
+                    : "results"}
+              </div>
+
+              {/* ==================================================
+                  PRODUCT RESULTS
+              =================================================== */}
+
+              {results.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.slug}`}
+                  onClick={onProductClick}
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                    rounded-xl
+                    p-3
+                    transition
+                    hover:bg-green-50
+                  "
+                >
+
+                  {/* Product Image */}
+
+                  <div
+                    className="
+                      relative
+                      h-14
+                      w-14
+                      shrink-0
+                      overflow-hidden
+                      rounded-lg
+                      bg-gray-50
+                    "
+                  >
+                    <Image
+                      src={product.images[0]}
+                      alt={product.name}
+                      fill
+                      sizes="56px"
+                      className="
+                        object-contain
+                        p-1
+                      "
+                    />
+                  </div>
+
+                  {/* Product Details */}
+
+                  <div className="min-w-0 flex-1">
+
+                    {/* Urdu Product Name */}
+
+                    <p
+                      dir="rtl"
+                      className="
+                        truncate
+                        text-right
+                        text-sm
+                        font-semibold
+                        text-green-800
+                      "
+                    >
+                      {product.nameUrdu}
+                    </p>
+
+                    {/* English Product Name */}
+
+                    <p
+                      dir="ltr"
+                      className="
+                        truncate
+                        text-left
+                        text-sm
+                        font-medium
+                        text-gray-800
+                      "
+                    >
+                      {product.name}
+                    </p>
+
+                    {/* Price */}
+
+                    <p
+                      dir="ltr"
+                      className="
+                        mt-1
+                        text-xs
+                        text-gray-500
+                      "
+                    >
+                      Rs.{" "}
+                      {Number(
+                        product.price
+                      ).toLocaleString()}
+                    </p>
+
+                  </div>
+
+                </Link>
+              ))}
+
+            </>
+          ) : (
+
+            /* ==================================================
+               NO RESULTS
+            =================================================== */
+
+            <div
+              className="
+                px-4
+                py-9
+                text-center
+              "
+            >
+              <p
+                dir={isUrdu ? "rtl" : "ltr"}
+                className="
+                  text-sm
+                  font-semibold
+                  text-gray-700
+                "
+              >
+                {isUrdu
+                  ? "کوئی مصنوعات نہیں ملیں"
+                  : "No products found"}
+              </p>
+            </div>
+
+          )}
+
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+/* ============================================================
+   MAIN HEADER
+============================================================ */
+
+export default function Header() {
+  const [search, setSearch] = useState("");
+
+  const [language, setLanguage] =
+    useState<SearchLanguage>("en");
+
+  const [searchOpen, setSearchOpen] =
+    useState(false);
+
+  /* ==========================================================
+     LOAD SAVED LANGUAGE
+  ========================================================== */
+
+  useEffect(() => {
+    const savedLanguage =
+      localStorage.getItem(
+        "site-language"
+      ) as SearchLanguage | null;
+
+    if (
+      savedLanguage === "en" ||
+      savedLanguage === "ur"
+    ) {
+      setLanguage(savedLanguage);
+    }
+
+    /* ========================================================
+       LISTEN FOR ANNOUNCEMENT BAR LANGUAGE CHANGE
+    ======================================================== */
+
+    const handleLanguageChange = (
+      event: Event
+    ) => {
+      const customEvent =
+        event as CustomEvent<SearchLanguage>;
+
+      if (
+        customEvent.detail === "en" ||
+        customEvent.detail === "ur"
+      ) {
+        setLanguage(customEvent.detail);
+
+        // Clear old search when switching language
+        setSearch("");
+      }
+    };
+
+    window.addEventListener(
+      "language-change",
+      handleLanguageChange
+    );
+
+    return () => {
+      window.removeEventListener(
+        "language-change",
+        handleLanguageChange
+      );
+    };
+  }, []);
+
+  /* ==========================================================
+     PRODUCT CLICK
+  ========================================================== */
+
+  const handleProductClick = () => {
+    setSearch("");
+    setSearchOpen(false);
+  };
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+
+  return (
+    <header className="w-full border-b bg-white">
+
+      {/* ======================================================
+          MAIN HEADER ROW
+      ======================================================= */}
+
+      <div
+        className="
+          mx-auto
+          flex
+          min-h-[82px]
+          max-w-7xl
+          items-center
+          gap-5
+          px-6
+        "
+      >
+
+        {/* ==================================================
+            LOGO
+        =================================================== */}
+
+        <Link
+          href="/"
+          aria-label="AQ Herbal Home"
+          className="
+            flex
+            shrink-0
+            items-center
+            gap-3
+          "
+        >
+
+          <Image
+            src="/logos/logo.webp"
+            alt="AQ Herbal"
+            width={150}
+            height={60}
+            priority
+            className="
+              h-auto
+              w-[105px]
+              object-contain
+              sm:w-[120px]
+            "
+          />
+
+          {/* Brand Text */}
+
+          <div
+            className="
+              hidden
+              leading-tight
+              sm:block
             "
           >
 
-            <Search size={18}/>
+            <p
+              className="
+                text-lg
+                font-bold
+                text-green-800
+              "
+            >
+              AQ Herbal
+            </p>
 
+            <p
+              className="
+                max-w-[210px]
+                text-[10px]
+                leading-4
+                text-gray-500
+              "
+            >
+              Inspired by Tibb-e-Nabawi (ﷺ),
+              Trusted for Wellness.
+            </p>
+
+          </div>
+
+        </Link>
+
+        {/* ==================================================
+            DESKTOP SEARCH
+        =================================================== */}
+
+        <div
+          className="
+            hidden
+            min-w-0
+            flex-1
+            md:block
+          "
+        >
+
+          <div
+            className="
+              mx-auto
+              max-w-2xl
+            "
+          >
+
+            <SearchArea
+              search={search}
+              setSearch={setSearch}
+              language={language}
+              onProductClick={
+                handleProductClick
+              }
+            />
+
+          </div>
+
+        </div>
+
+        {/* ==================================================
+            RIGHT ACTIONS
+        =================================================== */}
+
+        <div
+          className="
+            ml-auto
+            flex
+            shrink-0
+            items-center
+            gap-1
+            sm:gap-2
+          "
+        >
+
+          {/* ==================================================
+              LOGIN
+          =================================================== */}
+
+          <Link
+            href="/login"
+            className="
+              hidden
+              items-center
+              gap-1.5
+              rounded-lg
+              px-2
+              py-2
+              text-sm
+              font-medium
+              text-gray-700
+              transition
+              hover:bg-green-50
+              hover:text-green-700
+              sm:flex
+            "
+          >
+            <User size={19} />
+
+            <span>
+              Login
+            </span>
+          </Link>
+
+          {/* ==================================================
+              WISHLIST
+          =================================================== */}
+
+          <Link
+            href="/wishlist"
+            aria-label="Wishlist"
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-full
+              text-gray-700
+              transition
+              hover:bg-green-50
+              hover:text-green-700
+            "
+          >
+            <Heart size={20} />
+          </Link>
+
+          {/* ==================================================
+              CART
+          =================================================== */}
+
+          <Link
+            href="/cart"
+            aria-label="Shopping Cart"
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-full
+              text-gray-700
+              transition
+              hover:bg-green-50
+              hover:text-green-700
+            "
+          >
+            <ShoppingCart size={20} />
+          </Link>
+
+          {/* ==================================================
+              MOBILE SEARCH
+          =================================================== */}
+
+          <button
+            type="button"
+            onClick={() =>
+              setSearchOpen(
+                (value) => !value
+              )
+            }
+            aria-label="Search"
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-full
+              text-gray-700
+              transition
+              hover:bg-green-50
+              hover:text-green-700
+              md:hidden
+            "
+          >
+            {searchOpen ? (
+              <X size={21} />
+            ) : (
+              <Search size={21} />
+            )}
           </button>
-
 
         </div>
 
       </div>
+
+      {/* ======================================================
+          MOBILE SEARCH
+      ======================================================= */}
+
+      {searchOpen && (
+        <div
+          className="
+            border-t
+            bg-white
+            px-6
+            py-3
+            md:hidden
+          "
+        >
+
+          <SearchArea
+            search={search}
+            setSearch={setSearch}
+            language={language}
+            onProductClick={
+              handleProductClick
+            }
+          />
+
+        </div>
+      )}
+
     </header>
   );
 }
+
