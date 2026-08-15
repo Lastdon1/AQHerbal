@@ -544,36 +544,22 @@ export async function PUT(
       `,
       [
         productName,
-
         cleanNullableString(name_urdu),
-
         productSlug,
-
         categoryId,
-
         cleanNullableString(description),
-
         cleanNullableString(description_urdu),
-
         cleanNullableString(benefits),
-
         cleanNullableString(benefits_urdu),
-
         cleanNullableString(ingredients),
-
         cleanNullableString(ingredients_urdu),
-
         cleanNullableString(usage),
-
         cleanNullableString(usage_urdu),
-
         is_active ?? true,
-
         is_featured ?? false,
         is_home_herb ?? false,
         is_home_nuskhajat ?? false,
         is_home_murabba ?? false,
-
         productId,
       ]
     );
@@ -640,19 +626,15 @@ export async function PUT(
         `,
         [
           productId,
-
           image.image_url.trim(),
-
           cleanNullableString(
             image.alt_text
           ),
-
           Number.isInteger(
             image.sort_order
           )
             ? image.sort_order
             : index,
-
           isPrimary,
         ]
       );
@@ -700,14 +682,10 @@ export async function PUT(
     const validVariants = variants.filter(
       (variant) => {
         const quantity =
-          Number(
-            variant.quantity_value
-          );
+          Number(variant.quantity_value);
 
         const price =
-          Number(
-            variant.price
-          );
+          Number(variant.price);
 
         return (
           Number.isFinite(quantity) &&
@@ -737,14 +715,15 @@ export async function PUT(
         defaultVariantFound = true;
       }
 
+      /*
+       * old_price is typed as number | null,
+       * so do not compare it to an empty string.
+       */
       const oldPrice =
         variant.old_price === undefined ||
-        variant.old_price === null ||
-        variant.old_price === ""
+        variant.old_price === null
           ? null
-          : Number(
-              variant.old_price
-            );
+          : Number(variant.old_price);
 
       await client.query(
         `
@@ -770,24 +749,16 @@ export async function PUT(
         `,
         [
           productId,
-
           Number(
             variant.quantity_value
           ),
-
           variant.unit.trim(),
-
-          Number(
-            variant.price
-          ),
-
+          Number(variant.price),
           oldPrice !== null &&
           Number.isFinite(oldPrice)
             ? oldPrice
             : null,
-
           isDefault,
-
           variant.is_active ?? true,
         ]
       );

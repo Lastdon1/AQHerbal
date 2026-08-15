@@ -1,3 +1,5 @@
+// app/api/admin/products/route.ts
+
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
 
@@ -22,6 +24,7 @@ type ProductInput = {
   name_urdu?: string | null;
   slug: string;
   category_id: number;
+
   description?: string | null;
   description_urdu?: string | null;
 
@@ -136,10 +139,14 @@ export async function POST(request: Request) {
 
     let requestedSortOrder = 0;
 
+    /*
+     * IMPORTANT:
+     * sort_order is typed as number | null,
+     * so do not compare it with "".
+     */
     if (
       body.sort_order !== undefined &&
-      body.sort_order !== null &&
-      body.sort_order !== ""
+      body.sort_order !== null
     ) {
       const parsedSortOrder =
         Number(body.sort_order);
@@ -174,7 +181,8 @@ export async function POST(request: Request) {
               .map(Number)
               .filter(
                 (id) =>
-                  Number.isInteger(id) && id > 0
+                  Number.isInteger(id) &&
+                  id > 0
               )
           ),
         ]
@@ -417,12 +425,6 @@ export async function POST(request: Request) {
        Determine product position
     -------------------------------- */
 
-    /*
-     * Lock existing products while changing
-     * their positions. This keeps the ordering
-     * consistent if two admin requests happen
-     * at nearly the same time.
-     */
     const existingProducts =
       await client.query(
         `
