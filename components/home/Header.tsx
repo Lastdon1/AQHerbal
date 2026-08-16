@@ -533,7 +533,7 @@ export default function Header() {
             flex
             shrink-0
             items-center
-            gap-3
+            gap-2
           "
         >
           <Image
@@ -544,7 +544,7 @@ export default function Header() {
             priority
             className="
               h-auto
-              w-[105px]
+              w-[75px]
               object-contain
               sm:w-[120px]
             "
