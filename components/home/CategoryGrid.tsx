@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const categories = [
@@ -53,6 +58,14 @@ const categories = [
 export default function CategoryGrid() {
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  const pointerStartX = useRef(0);
+  const pointerStartY = useRef(0);
+  const pointerStartScrollLeft = useRef(0);
+
+  const isPointerDown = useRef(false);
+  const isHorizontalDragging = useRef(false);
+  const isDragging = useRef(false);
+
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
 
@@ -83,6 +96,132 @@ export default function CategoryGrid() {
     setTimeout(updateArrows, 400);
   };
 
+  const handlePointerDown = (
+    event: ReactPointerEvent<HTMLDivElement>
+  ) => {
+    // Only apply custom swipe handling to touch/pen input.
+    // Desktop mouse behavior remains unchanged.
+    if (event.pointerType === "mouse") {
+      return;
+    }
+
+    if (!sliderRef.current) return;
+
+    isPointerDown.current = true;
+    isHorizontalDragging.current = false;
+    isDragging.current = false;
+
+    pointerStartX.current = event.clientX;
+    pointerStartY.current = event.clientY;
+    pointerStartScrollLeft.current =
+      sliderRef.current.scrollLeft;
+  };
+
+  const handlePointerMove = (
+    event: ReactPointerEvent<HTMLDivElement>
+  ) => {
+    if (!isPointerDown.current) return;
+    if (!sliderRef.current) return;
+
+    const deltaX = event.clientX - pointerStartX.current;
+    const deltaY = event.clientY - pointerStartY.current;
+
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    // Wait until the gesture has a clear direction.
+    if (!isHorizontalDragging.current) {
+      if (absX < 8 && absY < 8) {
+        return;
+      }
+
+      // Vertical gesture:
+      // do NOT preventDefault(), so the browser can scroll the page.
+      if (absY > absX) {
+        return;
+      }
+
+      // Horizontal gesture:
+      // from this point forward, control the carousel ourselves.
+      isHorizontalDragging.current = true;
+      isDragging.current = true;
+
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore pointer capture failures.
+      }
+    }
+
+    if (!isHorizontalDragging.current) {
+      return;
+    }
+
+    event.preventDefault();
+
+    sliderRef.current.scrollLeft =
+      pointerStartScrollLeft.current - deltaX;
+
+    updateArrows();
+  };
+
+  const handlePointerUp = (
+    event: ReactPointerEvent<HTMLDivElement>
+  ) => {
+    isPointerDown.current = false;
+
+    if (isHorizontalDragging.current) {
+      try {
+        event.currentTarget.releasePointerCapture(
+          event.pointerId
+        );
+      } catch {
+        // Ignore pointer capture failures.
+      }
+    }
+
+    isHorizontalDragging.current = false;
+
+    // Keep this briefly available so a drag does not trigger
+    // an accidental product/category click.
+    window.setTimeout(() => {
+      isDragging.current = false;
+    }, 50);
+  };
+
+  const handlePointerCancel = (
+    event: ReactPointerEvent<HTMLDivElement>
+  ) => {
+    isPointerDown.current = false;
+
+    if (isHorizontalDragging.current) {
+      try {
+        event.currentTarget.releasePointerCapture(
+          event.pointerId
+        );
+      } catch {
+        // Ignore pointer capture failures.
+      }
+    }
+
+    isHorizontalDragging.current = false;
+    isDragging.current = false;
+  };
+
+  useEffect(() => {
+    updateArrows();
+
+    const handleResize = () => {
+      updateArrows();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 
@@ -104,15 +243,18 @@ export default function CategoryGrid() {
         <div
           ref={sliderRef}
           onScroll={updateArrows}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
           className="
             flex
             gap-4
             overflow-x-auto
-            overflow-y-hidden
             scroll-smooth
             px-2
             pb-2
-            touch-pan-x
+            touch-pan-y
             [-ms-overflow-style:none]
             [scrollbar-width:none]
             [&::-webkit-scrollbar]:hidden
@@ -122,6 +264,11 @@ export default function CategoryGrid() {
             <Link
               href="#"
               key={category.title}
+              onClick={(event) => {
+                if (isDragging.current) {
+                  event.preventDefault();
+                }
+              }}
               className="
                 group
                 relative
@@ -165,9 +312,7 @@ export default function CategoryGrid() {
                 {category.badge}
               </span>
 
-              {/* =========================
-                  IMAGE AREA
-              ========================== */}
+              {/* Image Area */}
               <div
                 className="
                   mx-auto
@@ -195,7 +340,7 @@ export default function CategoryGrid() {
                 />
               </div>
 
-              {/* Urdu / English title can remain here */}
+              {/* Title */}
               <h3
                 className="
                   text-sm
@@ -237,11 +382,10 @@ export default function CategoryGrid() {
           ))}
         </div>
 
-        {/* =========================
-            LEFT ARROW
-        ========================== */}
+        {/* LEFT ARROW */}
         {showLeft && (
           <button
+            type="button"
             onClick={() => slide("left")}
             aria-label="Previous categories"
             className="
@@ -267,11 +411,10 @@ export default function CategoryGrid() {
           </button>
         )}
 
-        {/* =========================
-            RIGHT ARROW
-        ========================== */}
+        {/* RIGHT ARROW */}
         {showRight && (
           <button
+            type="button"
             onClick={() => slide("right")}
             aria-label="Next categories"
             className="

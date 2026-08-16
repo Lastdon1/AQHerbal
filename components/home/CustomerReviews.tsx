@@ -30,8 +30,27 @@ const reviews = [
 
 export default function CustomerReviews() {
   return (
-    <section className="bg-white py-10 sm:py-12">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="relative overflow-hidden bg-white py-10 sm:py-12">
+
+      {/* =====================================================
+          LIGHT BLUE CURVED WAVE BACKGROUND
+      ====================================================== */}
+
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[52%] overflow-hidden">
+        <div
+          className="
+            absolute
+            -left-[8%]
+            -top-[42%]
+            h-[115%]
+            w-[116%]
+            rounded-[0_0_50%_50%]
+            bg-[#eaf5fa]
+          "
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
 
         {/* =====================================================
             HEADING
@@ -40,7 +59,7 @@ export default function CustomerReviews() {
         <div className="mb-9 text-center">
 
           <div className="mb-3 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-[#d8c9a8] sm:w-12" />
+            <span className="h-px w-8 bg-[#b8d7e5] sm:w-12" />
 
             <span
               className="
@@ -53,8 +72,10 @@ export default function CustomerReviews() {
               ISACO COMMUNITY
             </span>
 
-            <span className="h-px w-8 bg-[#d8c9a8] sm:w-12" />
+            <span className="h-px w-8 bg-[#b8d7e5] sm:w-12" />
           </div>
+
+          {/* Urdu Heading */}
 
           <h2
             dir="rtl"
@@ -69,6 +90,8 @@ export default function CustomerReviews() {
             ہمارے صارفین کیا کہتے ہیں؟
           </h2>
 
+          {/* English Heading */}
+
           <p
             className="
               mt-1
@@ -80,6 +103,8 @@ export default function CustomerReviews() {
           >
             Customer Reviews
           </p>
+
+          {/* Urdu Description */}
 
           <p
             dir="rtl"
@@ -95,6 +120,8 @@ export default function CustomerReviews() {
           >
             ان صارفین کے تجربات جنہوں نے آئی ساکو پر اعتماد کیا۔
           </p>
+
+          {/* English Description */}
 
           <p
             className="
@@ -120,9 +147,9 @@ export default function CustomerReviews() {
             relative
             overflow-hidden
             rounded-[2rem]
-            bg-[#f1f4ee]
-            px-5
-            py-8
+            bg-[#eaf5fa]
+            px-3
+            py-6
             sm:px-8
             sm:py-10
             lg:px-10
@@ -130,7 +157,9 @@ export default function CustomerReviews() {
           "
         >
 
-          {/* Decorative Green Shape — Top Right */}
+          {/* =================================================
+              DECORATIVE LIGHT BLUE SHAPES
+          ================================================== */}
 
           <div
             className="
@@ -141,11 +170,9 @@ export default function CustomerReviews() {
               h-56
               w-56
               rounded-full
-              bg-[#008a3e]
+              bg-[#cfe9f3]
             "
           />
-
-          {/* Decorative Green Shape — Bottom Left */}
 
           <div
             className="
@@ -156,21 +183,24 @@ export default function CustomerReviews() {
               h-64
               w-64
               rounded-full
-              bg-[#008a3e]
+              bg-[#d8edf5]
             "
           />
 
           {/* =================================================
               REVIEW CARDS
+              Mobile: 2 cards per row
+              Desktop: 3 cards per row
           ================================================== */}
 
           <div
             className="
               relative
               grid
-              grid-cols-1
-              gap-5
+              grid-cols-2
+              gap-3
               md:grid-cols-3
+              md:gap-5
             "
           >
             {reviews.map((item) => (
@@ -178,14 +208,19 @@ export default function CustomerReviews() {
                 key={item.name}
                 className="
                   group
-                  rounded-[1.75rem]
-                  bg-white
-                  p-6
-                  shadow-[0_8px_30px_rgba(36,84,58,0.07)]
+                  min-w-0
+                  rounded-[1.25rem]
+                  border
+                  border-[#d9e8da]
+                  bg-[#f0f6f0]
+                  p-3.5
+                  shadow-[0_8px_25px_rgba(36,84,58,0.07)]
                   transition-all
                   duration-300
                   hover:-translate-y-1
-                  hover:shadow-[0_14px_35px_rgba(36,84,58,0.12)]
+                  hover:bg-[#edf5ed]
+                  hover:shadow-[0_14px_32px_rgba(36,84,58,0.12)]
+                  sm:rounded-[1.75rem]
                   sm:p-7
                 "
               >
@@ -197,9 +232,10 @@ export default function CustomerReviews() {
                 <div
                   className="
                     font-serif
-                    text-5xl
+                    text-3xl
                     leading-none
-                    text-[#d8c9a8]
+                    text-[#c4b27d]
+                    sm:text-5xl
                   "
                 >
                   “
@@ -211,11 +247,13 @@ export default function CustomerReviews() {
 
                 <div
                   className="
-                    mt-2
+                    mt-1
                     flex
                     items-center
-                    gap-1
-                    text-[#dc2626]
+                    gap-0.5
+                    text-[#d6b64c]
+                    sm:mt-2
+                    sm:gap-1
                   "
                   aria-label={`${item.rating} out of 5 stars`}
                 >
@@ -225,9 +263,10 @@ export default function CustomerReviews() {
                       <span
                         key={`${item.name}-star-${index}`}
                         className="
-                          text-[22px]
+                          text-[13px]
                           leading-none
                           drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]
+                          sm:text-[22px]
                         "
                       >
                         ★
@@ -243,11 +282,15 @@ export default function CustomerReviews() {
                 <p
                   dir="rtl"
                   className="
-                    mt-4
-                    text-sm
+                    mt-3
+                    break-words
+                    text-[10px]
                     font-medium
-                    leading-7
-                    text-[#3f5147]
+                    leading-5
+                    text-[#315441]
+                    sm:mt-4
+                    sm:text-sm
+                    sm:leading-7
                   "
                 >
                   {item.reviewUrdu}
@@ -259,10 +302,14 @@ export default function CustomerReviews() {
 
                 <p
                   className="
-                    mt-3
-                    text-sm
-                    leading-6
-                    text-gray-500
+                    mt-2
+                    break-words
+                    text-[10px]
+                    leading-4
+                    text-[#68776e]
+                    sm:mt-3
+                    sm:text-sm
+                    sm:leading-6
                   "
                 >
                   “{item.review}”
@@ -272,40 +319,49 @@ export default function CustomerReviews() {
                     DIVIDER
                 ================================================== */}
 
-                <div className="my-5 h-px bg-[#e8e9e3]" />
+                <div className="my-3 h-px bg-[#d8e4d9] sm:my-5" />
 
                 {/* =================================================
                     CUSTOMER
                 ================================================== */}
 
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+
+                  {/* Avatar */}
 
                   <div
                     className="
                       flex
-                      h-11
-                      w-11
+                      h-8
+                      w-8
                       shrink-0
                       items-center
                       justify-center
                       rounded-full
                       border
-                      border-[#d9e4da]
-                      bg-[#eef3ed]
-                      text-sm
+                      border-[#c8dccb]
+                      bg-[#dfeee1]
+                      text-[10px]
                       font-bold
                       text-[#24543a]
+                      sm:h-11
+                      sm:w-11
+                      sm:text-sm
                     "
                   >
                     {item.name.charAt(0)}
                   </div>
 
-                  <div>
+                  {/* Customer Info */}
+
+                  <div className="min-w-0">
                     <h3
                       className="
-                        text-sm
+                        truncate
+                        text-[10px]
                         font-semibold
-                        text-gray-900
+                        text-[#173f2b]
+                        sm:text-sm
                       "
                     >
                       {item.name}
@@ -314,8 +370,9 @@ export default function CustomerReviews() {
                     <p
                       className="
                         mt-0.5
-                        text-xs
-                        text-gray-500
+                        text-[9px]
+                        text-[#718078]
+                        sm:text-xs
                       "
                     >
                       {item.location}

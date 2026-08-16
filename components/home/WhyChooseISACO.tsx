@@ -46,31 +46,33 @@ const features = [
 
 export default function WhyChooseISACO() {
   return (
-    <section className="bg-white py-14 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="bg-white py-10 sm:py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6">
 
         {/* =====================================================
             SECTION HEADING
         ====================================================== */}
 
-        <div className="mx-auto mb-12 max-w-3xl text-center">
+        <div className="mx-auto mb-8 max-w-3xl text-center sm:mb-12">
 
           {/* Small Brand Label */}
-          <div className="mb-4 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-[#b8a46a]" />
 
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8b7745]">
+          <div className="mb-3 flex items-center justify-center gap-2 sm:mb-4 sm:gap-3">
+            <span className="h-px w-6 bg-[#b8a46a] sm:w-8" />
+
+            <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#8b7745] sm:text-xs sm:tracking-[0.22em]">
               ISACO Wellness
             </span>
 
-            <span className="h-px w-8 bg-[#b8a46a]" />
+            <span className="h-px w-6 bg-[#b8a46a] sm:w-8" />
           </div>
 
           {/* Urdu Heading */}
+
           <h2
             dir="rtl"
             className="
-              text-3xl
+              text-2xl
               font-bold
               leading-relaxed
               text-[#173f2b]
@@ -81,13 +83,15 @@ export default function WhyChooseISACO() {
           </h2>
 
           {/* English Heading */}
+
           <p
             className="
-              mt-2
-              text-lg
+              mt-1
+              text-base
               font-semibold
               tracking-wide
               text-[#315c45]
+              sm:mt-2
               sm:text-xl
             "
           >
@@ -95,19 +99,23 @@ export default function WhyChooseISACO() {
           </p>
 
           {/* Divider */}
-          <div className="mx-auto mt-5 h-px w-14 bg-[#b8a46a]" />
+
+          <div className="mx-auto mt-3 h-px w-10 bg-[#b8a46a] sm:mt-5 sm:w-14" />
 
           {/* Urdu Description */}
+
           <p
             dir="rtl"
             className="
               mx-auto
-              mt-5
+              mt-3
               max-w-2xl
-              text-sm
-              leading-8
+              text-xs
+              leading-6
               text-[#59655e]
+              sm:mt-5
               sm:text-base
+              sm:leading-8
             "
           >
             قدرت، روایتی حکمت اور اعتماد کا امتزاج، آپ کی روزمرہ صحت و
@@ -115,15 +123,17 @@ export default function WhyChooseISACO() {
           </p>
 
           {/* English Description */}
+
           <p
             className="
               mx-auto
               mt-1
               max-w-2xl
-              text-sm
-              leading-7
+              text-xs
+              leading-5
               text-[#737a75]
               sm:text-base
+              sm:leading-7
             "
           >
             A thoughtful blend of nature, traditional wisdom and trust for
@@ -139,11 +149,12 @@ export default function WhyChooseISACO() {
           className="
             relative
             overflow-hidden
-            rounded-[2rem]
+            rounded-[1.25rem]
             bg-[#f1f3ed]
-            px-5
-            py-8
-            shadow-[0_12px_40px_rgba(23,63,43,0.06)]
+            px-2.5
+            py-4
+            shadow-[0_8px_30px_rgba(23,63,43,0.05)]
+            sm:rounded-[2rem]
             sm:px-8
             sm:py-10
             lg:px-10
@@ -187,9 +198,10 @@ export default function WhyChooseISACO() {
             className="
               relative
               grid
-              grid-cols-1
-              gap-4
+              grid-cols-2
+              gap-2
               sm:grid-cols-2
+              sm:gap-4
               lg:grid-cols-4
             "
           >
@@ -201,18 +213,22 @@ export default function WhyChooseISACO() {
                   key={feature.title}
                   className="
                     group
-                    rounded-[1.5rem]
+                    rounded-xl
                     bg-white
-                    px-5
-                    py-8
+                    px-2
+                    py-4
                     text-center
-                    shadow-[0_6px_24px_rgba(23,63,43,0.05)]
+                    shadow-[0_4px_16px_rgba(23,63,43,0.05)]
                     transition-all
                     duration-300
                     hover:-translate-y-1
                     hover:shadow-[0_12px_30px_rgba(23,63,43,0.10)]
+                    sm:rounded-[1.5rem]
+                    sm:px-5
+                    sm:py-8
                   "
                 >
+
                   {/* =================================================
                       ICON
                   ================================================== */}
@@ -221,8 +237,8 @@ export default function WhyChooseISACO() {
                     className="
                       mx-auto
                       flex
-                      h-[68px]
-                      w-[68px]
+                      h-11
+                      w-11
                       items-center
                       justify-center
                       rounded-full
@@ -234,11 +250,14 @@ export default function WhyChooseISACO() {
                       duration-300
                       group-hover:bg-[#e4eee5]
                       group-hover:ring-[#c8dacb]
+                      sm:h-[68px]
+                      sm:w-[68px]
                     "
                   >
                     <Icon
-                      size={29}
+                      size={21}
                       strokeWidth={1.5}
+                      className="sm:h-[29px] sm:w-[29px]"
                     />
                   </div>
 
@@ -249,11 +268,14 @@ export default function WhyChooseISACO() {
                   <h3
                     dir="rtl"
                     className="
-                      mt-5
-                      text-lg
+                      mt-3
+                      text-xs
                       font-bold
-                      leading-relaxed
+                      leading-5
                       text-[#173f2b]
+                      sm:mt-5
+                      sm:text-lg
+                      sm:leading-relaxed
                     "
                   >
                     {feature.titleUrdu}
@@ -265,10 +287,13 @@ export default function WhyChooseISACO() {
 
                   <p
                     className="
-                      mt-1
-                      text-sm
+                      mt-0.5
+                      text-[9px]
                       font-semibold
+                      leading-4
                       text-[#6f603b]
+                      sm:mt-1
+                      sm:text-sm
                     "
                   >
                     {feature.title}
@@ -278,7 +303,7 @@ export default function WhyChooseISACO() {
                       SMALL ACCENT
                   ================================================== */}
 
-                  <div className="mx-auto mt-4 h-px w-8 bg-[#c4b27d]" />
+                  <div className="mx-auto mt-2 h-px w-6 bg-[#c4b27d] sm:mt-4 sm:w-8" />
 
                   {/* =================================================
                       URDU DESCRIPTION
@@ -288,11 +313,14 @@ export default function WhyChooseISACO() {
                     dir="rtl"
                     className="
                       mx-auto
-                      mt-4
+                      mt-2
                       max-w-xs
-                      text-sm
-                      leading-7
+                      text-[9px]
+                      leading-4
                       text-[#626c65]
+                      sm:mt-4
+                      sm:text-sm
+                      sm:leading-7
                     "
                   >
                     {feature.descriptionUrdu}
@@ -305,11 +333,14 @@ export default function WhyChooseISACO() {
                   <p
                     className="
                       mx-auto
-                      mt-2
+                      mt-1
                       max-w-xs
-                      text-xs
-                      leading-6
+                      text-[8px]
+                      leading-3.5
                       text-[#7b827d]
+                      sm:mt-2
+                      sm:text-xs
+                      sm:leading-6
                     "
                   >
                     {feature.description}

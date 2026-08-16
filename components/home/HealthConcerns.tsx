@@ -237,8 +237,7 @@ export default function HealthConcerns({
             scroll-smooth
             px-4
             pb-2
-            touch-pan-x
-            [-ms-overflow-style:none]
+                        [-ms-overflow-style:none]
             [scrollbar-width:none]
             [&::-webkit-scrollbar]:hidden
           "

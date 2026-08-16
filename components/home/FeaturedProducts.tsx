@@ -57,8 +57,7 @@ export default function FeaturedProducts({
               gap-4
               overflow-x-auto
               pb-2
-              touch-pan-x
-              [-ms-overflow-style:none]
+                          [-ms-overflow-style:none]
               [scrollbar-width:none]
               [&::-webkit-scrollbar]:hidden
               sm:hidden

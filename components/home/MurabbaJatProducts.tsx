@@ -97,13 +97,13 @@ export default function MurabbaJatProducts({
         >
           {products.map((product) => (
             <div
-              key={product.id}
-              className="
-                min-w-[78%]
-                flex-shrink-0
-                sm:min-w-0
-              "
-            >
+  key={product.id}
+  className="
+    min-w-[46%]
+    flex-shrink-0
+    sm:min-w-0
+  "
+>
               <ProductCard product={product} />
             </div>
           ))}

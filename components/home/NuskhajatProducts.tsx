@@ -99,7 +99,7 @@ export default function NuskhajatProducts({
             <div
               key={product.id}
               className="
-                min-w-[78%]
+               min-w-[46%]
                 flex-shrink-0
                 sm:min-w-0
               "

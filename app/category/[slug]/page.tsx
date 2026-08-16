@@ -160,7 +160,9 @@ export default async function CategoryPage({
      GET PRODUCTS
   =================================================== */
 
-  const products = await getCategoryProducts(category.id);
+  const products = await getCategoryProducts(
+    category.id
+  );
 
   /* ===================================================
      PAGE
@@ -239,16 +241,30 @@ export default async function CategoryPage({
 
         {/* =========================================
             PRODUCTS
+            MOBILE: 2 PRODUCTS PER ROW
+            TABLET: 2 PRODUCTS PER ROW
+            DESKTOP: 4 PRODUCTS PER ROW
         ========================================= */}
 
         {products.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
 
             {products.map((product) => (
               <Link
                 key={product.id}
                 href={`/product/${product.slug}`}
-                className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                className="
+                  group
+                  overflow-hidden
+                  rounded-2xl
+                  border
+                  border-gray-100
+                  bg-white
+                  shadow-sm
+                  transition
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
               >
 
                 {/* PRODUCT IMAGE */}
@@ -260,11 +276,18 @@ export default async function CategoryPage({
                       src={product.image_url}
                       alt={product.name}
                       fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-contain p-6 transition duration-300 group-hover:scale-105"
+                      sizes="(max-width: 639px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                      className="
+                        object-contain
+                        p-3
+                        transition
+                        duration-300
+                        group-hover:scale-105
+                        sm:p-6
+                      "
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-gray-400">
+                    <div className="flex h-full items-center justify-center text-xs text-gray-400 sm:text-sm">
                       No Image
                     </div>
                   )}
@@ -273,7 +296,7 @@ export default async function CategoryPage({
 
                 {/* PRODUCT INFORMATION */}
 
-                <div className="p-5">
+                <div className="p-3 sm:p-5">
 
                   {/* URDU NAME */}
 
@@ -281,7 +304,15 @@ export default async function CategoryPage({
                     <p
                       dir="rtl"
                       lang="ur"
-                      className="text-left text-lg font-semibold leading-8 text-gray-900"
+                      className="
+                        text-left
+                        text-sm
+                        font-semibold
+                        leading-6
+                        text-gray-900
+                        sm:text-lg
+                        sm:leading-8
+                      "
                     >
                       {product.name_urdu}
                     </p>
@@ -289,14 +320,36 @@ export default async function CategoryPage({
 
                   {/* ENGLISH NAME */}
 
-                  <h2 className="mt-0.5 text-base font-semibold text-gray-900">
+                  <h2
+                    className="
+                      mt-0.5
+                      line-clamp-2
+                      text-sm
+                      font-semibold
+                      leading-5
+                      text-gray-900
+                      sm:text-base
+                      sm:leading-6
+                    "
+                  >
                     {product.name}
                   </h2>
 
                   {/* DESCRIPTION */}
 
                   {product.description && (
-                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-gray-500">
+                    <p
+                      className="
+                        mt-1.5
+                        hidden
+                        line-clamp-2
+                        text-sm
+                        leading-6
+                        text-gray-500
+                        sm:mt-2
+                        sm:block
+                      "
+                    >
                       {product.description}
                     </p>
                   )}
@@ -304,9 +357,9 @@ export default async function CategoryPage({
                   {/* PRICE */}
 
                   {product.price !== null && (
-                    <div className="mt-4 flex items-center gap-2">
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5 sm:mt-4 sm:gap-2">
 
-                      <span className="text-lg font-bold text-green-700">
+                      <span className="text-sm font-bold text-green-700 sm:text-lg">
                         Rs{" "}
                         {Number(
                           product.price
@@ -316,7 +369,7 @@ export default async function CategoryPage({
                       {product.old_price !== null &&
                         Number(product.old_price) >
                           Number(product.price) && (
-                          <span className="text-sm text-gray-400 line-through">
+                          <span className="text-[10px] text-gray-400 line-through sm:text-sm">
                             Rs{" "}
                             {Number(
                               product.old_price
@@ -329,7 +382,18 @@ export default async function CategoryPage({
 
                   {/* VIEW PRODUCT */}
 
-                  <div className="mt-4 text-sm font-semibold text-green-700 transition group-hover:text-green-800">
+                  <div
+                    className="
+                      mt-2
+                      text-xs
+                      font-semibold
+                      text-green-700
+                      transition
+                      group-hover:text-green-800
+                      sm:mt-4
+                      sm:text-sm
+                    "
+                  >
                     View Product →
                   </div>
 

@@ -624,20 +624,48 @@ Please confirm availability and order details.`
 
   return (
     <div className="w-full min-w-0 overflow-x-hidden">
-      <section className="grid min-w-0 gap-7 lg:grid-cols-2 lg:gap-10">
+      <section className="grid min-w-0 grid-cols-[minmax(0,0.46fr)_minmax(0,0.54fr)] gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-10">
 
         {/* =================================================
-            LEFT SIDE
-            IMAGE ONLY ON DESKTOP/MOBILE
+            IMAGE AREA
+            Mobile: big image with thumbnails underneath
+            Desktop: thumbnails beside big image
         ================================================= */}
 
-        <div className="min-w-0">
-          <div className="flex min-w-0 items-start gap-2 sm:gap-3">
+        <div className="col-span-1 min-w-0">
+          <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start">
+
+            {/* BIG IMAGE */}
+
+            <div className="order-1 min-w-0 flex-1 lg:order-2">
+              <div className="relative w-full overflow-hidden rounded-2xl border border-gray-100 bg-[#f8faf8]">
+                <div className="relative aspect-square w-full max-h-[190px] sm:max-h-[230px] lg:max-h-none lg:aspect-[1/0.9]">
+                  {selectedImage ? (
+                    <Image
+                      key={selectedImage.id}
+                      src={selectedImage.image_url}
+                      alt={
+                        selectedImage.alt_text ||
+                        product.name
+                      }
+                      fill
+                      priority
+                      sizes="(max-width: 1023px) 48vw, 45vw"
+                      className="object-contain p-2.5 sm:p-4 lg:p-7"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-sm text-gray-400">
+                      No Image
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {/* THUMBNAILS */}
 
             {product.images.length > 0 && (
-              <div className="flex w-[52px] shrink-0 flex-col gap-2 sm:w-[64px]">
+              <div className="order-2 flex w-full shrink-0 flex-row gap-2 overflow-x-auto lg:order-1 lg:w-[64px] lg:flex-col lg:overflow-visible">
                 {product.images.map((image) => {
                   const selected =
                     image.id === selectedImageId;
@@ -647,15 +675,13 @@ Please confirm availability and order details.`
                       key={image.id}
                       type="button"
                       onClick={() =>
-                        setSelectedImageId(
-                          image.id
-                        )
+                        setSelectedImageId(image.id)
                       }
                       aria-label={`View ${
                         image.alt_text ||
                         product.name
                       }`}
-                      className={`relative h-[50px] w-[50px] shrink-0 overflow-hidden rounded-lg border bg-white transition sm:h-[62px] sm:w-[62px] ${
+                      className={`relative h-[42px] w-[42px] shrink-0 overflow-hidden rounded-lg border bg-white transition sm:h-[54px] sm:w-[54px] lg:h-[62px] lg:w-[62px] ${
                         selected
                           ? "border-green-600 ring-2 ring-green-100"
                           : "border-gray-200 hover:border-green-400"
@@ -669,7 +695,7 @@ Please confirm availability and order details.`
                         }
                         fill
                         sizes="62px"
-                        className="object-contain p-1"
+                        className="object-contain p-0.5"
                       />
                     </button>
                   );
@@ -677,183 +703,18 @@ Please confirm availability and order details.`
               </div>
             )}
 
-            {/* BIG IMAGE */}
-
-            <div className="min-w-0 flex-1">
-              <div className="relative w-full overflow-hidden rounded-2xl border border-gray-100 bg-[#f8faf8]">
-                <div className="relative aspect-[1/0.9] w-full">
-                  {selectedImage ? (
-                    <Image
-                      key={selectedImage.id}
-                      src={
-                        selectedImage.image_url
-                      }
-                      alt={
-                        selectedImage.alt_text ||
-                        product.name
-                      }
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 90vw, 45vw"
-                      className="object-contain p-4 sm:p-7"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-gray-400">
-                      No Image
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
-
-      {/* =================================================
-          PRODUCT TABS
-          LEFT COLUMN ONLY
-      ================================================= */}
-
-      <section className="mt-7 min-w-0 border-t border-gray-100 pt-5">
-
-        {/* TAB BAR */}
-
-        <div className="w-full min-w-0 overflow-x-auto overflow-y-hidden">
-          <div className="flex min-w-max border-b border-gray-200">
-            {tabs.map((tab) => {
-              const active =
-                activeTab === tab.id;
-
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() =>
-                    setActiveTab(tab.id)
-                  }
-                  className={`relative shrink-0 px-3 py-2.5 text-center transition sm:min-w-[105px] ${
-                    active
-                      ? "text-green-700"
-                      : "text-gray-500 hover:text-green-700"
-                  }`}
-                >
-                  <span className="block text-xs font-semibold sm:text-sm">
-                    {tab.label}
-                  </span>
-
-                  <span
-                    dir="rtl"
-                    className="mt-0.5 block text-[10px] text-gray-500"
-                  >
-                    {tab.urdu}
-                  </span>
-
-                  {active && (
-                    <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-green-700" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* TAB CONTENT */}
-
-        <div className="mt-5 min-w-0">
-          {activeTab === "description" && (
-            <InfoContent
-              englishTitle="Description"
-              urduTitle="تفصیل"
-              english={product.description}
-              urdu={product.description_urdu}
-              empty="No description available."
-            />
-          )}
-
-          {activeTab === "benefits" && (
-            <InfoContent
-              englishTitle="Benefits"
-              urduTitle="فوائد"
-              english={product.benefits}
-              urdu={product.benefits_urdu}
-              empty="No benefits information available."
-            />
-          )}
-
-          {activeTab === "ingredients" && (
-            <InfoContent
-              englishTitle="Ingredients"
-              urduTitle="اجزاء"
-              english={product.ingredients}
-              urdu={product.ingredients_urdu}
-              empty="No ingredients information available."
-            />
-          )}
-
-          {activeTab === "usage" && (
-            <InfoContent
-              englishTitle="How to Use"
-              urduTitle="طریقہ استعمال"
-              english={product.usage}
-              urdu={product.usage_urdu}
-              empty="No usage information available."
-            />
-          )}
-
-          {activeTab === "reviews" && (
-            <ReviewsSection
-              reviews={reviews}
-              reviewSummary={reviewSummary}
-              reviewsLoading={reviewsLoading}
-              reviewsError={reviewsError}
-              showReviewForm={showReviewForm}
-              setShowReviewForm={
-                setShowReviewForm
-              }
-              reviewSubmitting={
-                reviewSubmitting
-              }
-              reviewSuccess={reviewSuccess}
-              reviewSubmitError={
-                reviewSubmitError
-              }
-              customerName={customerName}
-              setCustomerName={
-                setCustomerName
-              }
-              reviewTitle={reviewTitle}
-              setReviewTitle={setReviewTitle}
-              reviewText={reviewText}
-              setReviewText={setReviewText}
-              reviewRating={reviewRating}
-              setReviewRating={
-                setReviewRating
-              }
-              hoverRating={hoverRating}
-              setHoverRating={
-                setHoverRating
-              }
-              handleReviewSubmit={
-                handleReviewSubmit
-              }
-              renderStars={renderStars}
-              formatReviewDate={
-                formatReviewDate
-              }
-            />
-          )}
-        </div>
-      </section>
         </div>
 
         {/* =================================================
-            RIGHT SIDE
             PRODUCT INFORMATION
         ================================================= */}
 
-        <div className="min-w-0">
+        <div className="col-span-1 min-w-0">
 
           {/* PRODUCT NAME */}
 
-          <h1 className="break-words text-xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-8">
+          <h1 className="break-words text-base font-bold leading-5 text-gray-900 sm:text-2xl sm:leading-7 lg:text-3xl lg:leading-8">
             {product.name}
           </h1>
 
@@ -862,7 +723,7 @@ Please confirm availability and order details.`
           {product.name_urdu && (
             <p
               dir="rtl"
-              className="mt-0.5 break-words text-left text-xl font-bold leading-8 text-gray-800 sm:text-2xl"
+              className="mt-0.5 break-words text-left text-base font-bold leading-6 text-gray-800 sm:text-xl lg:text-2xl"
             >
               {product.name_urdu}
             </p>
@@ -870,7 +731,7 @@ Please confirm availability and order details.`
 
           {/* REVIEWS */}
 
-          <div className="mt-2 flex min-w-0 items-center gap-2">
+          <div className="mt-1.5 flex min-w-0 items-center gap-1.5">
             {reviewsLoading ? (
               <span className="text-xs text-gray-400">
                 Loading rating...
@@ -890,10 +751,8 @@ Please confirm availability and order details.`
                   )}
                 </button>
 
-                <span className="text-sm font-semibold text-gray-700">
-                  {reviewSummary.average_rating.toFixed(
-                    1
-                  )}
+                <span className="text-xs font-semibold text-gray-700">
+                  {reviewSummary.average_rating.toFixed(1)}
                 </span>
 
                 <button
@@ -901,11 +760,10 @@ Please confirm availability and order details.`
                   onClick={() =>
                     setActiveTab("reviews")
                   }
-                  className="truncate text-xs text-gray-500 hover:text-green-700"
+                  className="truncate text-[10px] text-gray-500 hover:text-green-700"
                 >
                   ({reviewSummary.total_reviews}{" "}
-                  {reviewSummary.total_reviews ===
-                  1
+                  {reviewSummary.total_reviews === 1
                     ? "review"
                     : "reviews"}
                   )
@@ -927,29 +785,22 @@ Please confirm availability and order details.`
           {/* PRICE */}
 
           {selectedVariant && (
-            <div className="mt-3">
-              <div className="text-2xl font-bold leading-none text-green-700 sm:text-3xl">
+            <div className="mt-2.5">
+              <div className="text-xl font-bold leading-none text-green-700 sm:text-2xl lg:text-3xl">
                 Rs{" "}
                 {Number(
                   selectedVariant.price
                 ).toLocaleString("en-PK")}
               </div>
 
-              {selectedVariant.old_price !==
-                null &&
-                Number(
-                  selectedVariant.old_price
-                ) >
-                  Number(
-                    selectedVariant.price
-                  ) && (
+              {selectedVariant.old_price !== null &&
+                Number(selectedVariant.old_price) >
+                  Number(selectedVariant.price) && (
                   <span className="mt-1 inline-block text-sm text-gray-400 line-through">
                     Rs{" "}
                     {Number(
                       selectedVariant.old_price
-                    ).toLocaleString(
-                      "en-PK"
-                    )}
+                    ).toLocaleString("en-PK")}
                   </span>
                 )}
             </div>
@@ -958,36 +809,36 @@ Please confirm availability and order details.`
           {/* HEALTH CONCERNS */}
 
           {product.health_concerns.length > 0 && (
-            <div className="mt-4 min-w-0">
+            <div className="mt-3 min-w-0">
               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                <h2 className="text-sm font-semibold text-gray-900">
+                <h2 className="text-xs font-semibold text-gray-900 sm:text-sm">
                   Health Concerns
                 </h2>
 
                 <span
                   dir="rtl"
-                  className="text-sm text-gray-500"
+                  className="text-xs text-gray-500 sm:text-sm"
                 >
                   صحت کے مسائل
                 </span>
               </div>
 
-              <div className="mt-2 flex min-w-0 flex-wrap gap-2">
+              <div className="mt-1.5 flex min-w-0 flex-wrap gap-1.5  sm:gap-2">
                 {product.health_concerns.map(
                   (concern) => (
                     <Link
                       key={concern.id}
                       href={`/health-concern/${concern.slug}`}
-                      className="max-w-full rounded-full bg-green-50 px-3 py-1.5 transition hover:bg-green-100"
+                      className="max-w-full rounded-full bg-green-50 px-2.5 py-1 transition hover:bg-green-100 sm:px-3 sm:py-1.5"
                     >
-                      <span className="block break-words text-xs font-medium text-green-700">
+                      <span className="block break-words text-[10px] font-medium text-green-700 sm:text-xs">
                         {concern.name}
                       </span>
 
                       {concern.name_urdu && (
                         <span
                           dir="rtl"
-                          className="block break-words text-xs text-green-600"
+                          className="block break-words text-[9px] text-green-600 sm:text-xs"
                         >
                           {concern.name_urdu}
                         </span>
@@ -999,11 +850,158 @@ Please confirm availability and order details.`
             </div>
           )}
 
-          {/* SHORT PRODUCT DESCRIPTION */}
+          {/* AVAILABLE SIZES */}
+
+          {product.variants.length > 0 && (
+            <div className="mt-3 min-w-0">
+              <div className="text-xs font-semibold text-gray-900 sm:text-sm">
+                Available Sizes
+              </div>
+
+              <div className="mt-1.5 flex min-w-0 flex-wrap gap-1.5 sm:gap-2">
+                {product.variants.map(
+                  (variant) => {
+                    const selected =
+                      variant.id ===
+                      selectedVariantId;
+
+                    return (
+                      <button
+                        key={variant.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedVariantId(
+                            variant.id
+                          );
+                          setCartMessage("");
+                        }}
+                        className={`relative min-w-[68px] max-w-full rounded-lg border px-2.5 py-1.5 text-center transition sm:min-w-[82px] sm:px-3 sm:py-2 ${
+                          selected
+                            ? "border-green-600 bg-green-50 ring-1 ring-green-200"
+                            : "border-gray-200 bg-white hover:border-green-400"
+                        }`}
+                      >
+                        {selected && (
+                          <span className="absolute right-1 top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-green-600 text-[8px] font-bold text-white">
+                            ✓
+                          </span>
+                        )}
+
+                        <p className="break-words text-[10px] font-semibold text-gray-900 sm:text-xs">
+                          {variant.quantity_value}{" "}
+                          {variant.unit}
+                        </p>
+
+                        <p className="mt-0.5 text-[10px] font-bold text-green-700 sm:text-xs">
+                          Rs{" "}
+                          {Number(
+                            variant.price
+                          ).toLocaleString("en-PK")}
+                        </p>
+                      </button>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="hidden lg:block">
+          {/* =================================================
+              QUANTITY + ADD TO CART
+          ================================================= */}
+
+          <div className="mt-3 min-w-0">
+            <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)] gap-1.5 sm:gap-2">
+
+              {/* QUANTITY */}
+
+              <div className="flex h-10 shrink-0 items-center overflow-hidden rounded-lg border border-gray-200 bg-white sm:h-11">
+                <button
+                  type="button"
+                  aria-label="Decrease quantity"
+                  onClick={() =>
+                    setQuantity((current) =>
+                      Math.max(1, current - 1)
+                    )
+                  }
+                  className="flex h-full w-7 items-center justify-center text-sm text-gray-600 sm:w-9 sm:text-base hover:bg-gray-50 hover:text-green-700"
+                >
+                  −
+                </button>
+
+                <span className="flex h-full min-w-[28px] items-center justify-center border-x border-gray-200 text-[10px] font-semibold text-gray-900 sm:min-w-[34px] sm:text-xs">
+                  {quantity}
+                </span>
+
+                <button
+                  type="button"
+                  aria-label="Increase quantity"
+                  onClick={() =>
+                    setQuantity((current) =>
+                      current + 1
+                    )
+                  }
+                  className="flex h-full w-7 items-center justify-center text-sm text-gray-600 sm:w-9 sm:text-base hover:bg-gray-50 hover:text-green-700"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* ADD TO CART */}
+
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="h-10 min-w-0 rounded-lg bg-green-700 px-2 text-[10px] font-semibold text-white shadow-sm transition hover:bg-green-800 sm:h-11 sm:px-3 sm:text-xs"
+              >
+                Add to Cart
+              </button>
+
+              {/* BUY IT NOW */}
+
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                className="h-10 min-w-0 rounded-lg bg-cyan-500 px-2 text-[10px] font-semibold text-white shadow-sm transition hover:bg-cyan-600 sm:h-11 sm:px-3 sm:text-xs"
+              >
+                Buy It Now
+              </button>
+            </div>
+
+            {cartMessage && (
+              <p className="mt-2 break-words text-xs font-medium text-green-700">
+                {cartMessage}
+              </p>
+            )}
+          </div>
+
+          </div>
+
+          {/* WHATSAPP — DESKTOP */}
+
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 hidden h-11 w-full items-center justify-center gap-2 rounded-lg border border-green-600 bg-white px-4 text-sm font-semibold text-green-700 transition hover:bg-green-50 lg:flex"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4 shrink-0 fill-current"
+              aria-hidden="true"
+            >
+              <path d="M20.52 3.48A11.84 11.84 0 0 0 12.07 0C5.52 0 .2 5.32.2 11.87c0 2.09.55 4.13 1.59 5.92L.1 24l6.35-1.66a11.83 11.83 0 0 0 5.62 1.43h.01c6.54 0 11.86-5.32 11.87-11.87 0-3.17-1.23-6.15-3.42-8.42ZM12.08 21.7h-.01a9.82 9.82 0 0 1-5.01-1.37l-.36-.21-3.77.99 1.01-3.68-.23-.38a9.83 9.83 0 1 1 8.37 4.65Zm5.4-7.37c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.23-.66.08-.3-.15-1.26-.46-2.4-1.46-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.69-1.66-.94-2.27-.25-.59-.5-.51-.69-.52h-.58c-.2 0-.53.08-.81.38-.28.3-1.06 1.04-1.06 2.54s1.09 2.95 1.24 3.15c.15.2 2.14 3.27 5.19 4.59.73.32 1.3.51 1.74.65.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35Z" />
+            </svg>
+
+            <span>Order on WhatsApp</span>
+          </a>
+
+          {/* SHORT PRODUCT DESCRIPTION — DESKTOP */}
 
           {(product.description_urdu ||
             product.description) && (
-            <div className="mt-4 space-y-1.5">
+            <div className="mt-4 hidden space-y-1.5 lg:block">
               {product.description_urdu && (
                 <p
                   dir="rtl"
@@ -1021,161 +1019,214 @@ Please confirm availability and order details.`
             </div>
           )}
 
-          {/* AVAILABLE SIZES */}
+        </div>
 
-          {product.variants.length > 0 && (
-            <div className="mt-4 min-w-0">
-              <div className="text-sm font-semibold text-gray-900">
-                Available Sizes
-              </div>
+        {/* =================================================
+            MOBILE ACTIONS
+            Full width below the image + product information
+        ================================================= */}
 
-              <div className="mt-2 flex min-w-0 flex-wrap gap-2">
-                {product.variants.map(
-                  (variant) => {
-                    const selected =
-                      variant.id ===
-                      selectedVariantId;
+        <div className="col-span-2 min-w-0 lg:hidden">
+          <div className="mt-1 grid min-w-0 grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)] gap-1.5 sm:gap-2">
 
-                    return (
-                      <button
-                        key={variant.id}
-                        type="button"
-                        onClick={() => {
-                          setSelectedVariantId(
-                            variant.id
-                          );
-                          setCartMessage("");
-                        }}
-                        className={`relative min-w-[82px] max-w-full rounded-lg border px-3 py-2 text-center transition ${
-                          selected
-                            ? "border-green-600 bg-green-50 ring-1 ring-green-200"
-                            : "border-gray-200 bg-white hover:border-green-400"
-                        }`}
-                      >
-                        {selected && (
-                          <span className="absolute right-1 top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-green-600 text-[8px] font-bold text-white">
-                            ✓
-                          </span>
-                        )}
+            {/* QUANTITY */}
 
-                        <p className="break-words text-xs font-semibold text-gray-900">
-                          {variant.quantity_value}{" "}
-                          {variant.unit}
-                        </p>
+            <div className="flex h-10 shrink-0 items-center overflow-hidden rounded-lg border border-gray-200 bg-white sm:h-11">
+              <button
+                type="button"
+                aria-label="Decrease quantity"
+                onClick={() =>
+                  setQuantity((current) =>
+                    Math.max(1, current - 1)
+                  )
+                }
+                className="flex h-full w-7 items-center justify-center text-sm text-gray-600 hover:bg-gray-50 hover:text-green-700 sm:w-9 sm:text-base"
+              >
+                −
+              </button>
 
-                        <p className="mt-0.5 text-xs font-bold text-green-700">
-                          Rs{" "}
-                          {Number(
-                            variant.price
-                          ).toLocaleString(
-                            "en-PK"
-                          )}
-                        </p>
-                      </button>
-                    );
-                  }
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* =================================================
-              QUANTITY + ADD TO CART
-          ================================================= */}
-
-          <div className="mt-4 min-w-0">
-            <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)] gap-2">
-
-              {/* QUANTITY */}
-
-              <div className="flex h-11 shrink-0 items-center overflow-hidden rounded-lg border border-gray-200 bg-white">
-                <button
-                  type="button"
-                  aria-label="Decrease quantity"
-                  onClick={() =>
-                    setQuantity(
-                      (current) =>
-                        Math.max(
-                          1,
-                          current - 1
-                        )
-                    )
-                  }
-                  className="flex h-full w-9 items-center justify-center text-base text-gray-600 hover:bg-gray-50 hover:text-green-700"
-                >
-                  −
-                </button>
-
-                <span className="flex h-full min-w-[34px] items-center justify-center border-x border-gray-200 text-xs font-semibold text-gray-900">
-                  {quantity}
-                </span>
-
-                <button
-                  type="button"
-                  aria-label="Increase quantity"
-                  onClick={() =>
-                    setQuantity(
-                      (current) =>
-                        current + 1
-                    )
-                  }
-                  className="flex h-full w-9 items-center justify-center text-base text-gray-600 hover:bg-gray-50 hover:text-green-700"
-                >
-                  +
-                </button>
-              </div>
-
-              {/* ADD TO CART */}
+              <span className="flex h-full min-w-[28px] items-center justify-center border-x border-gray-200 text-[10px] font-semibold text-gray-900 sm:min-w-[34px] sm:text-xs">
+                {quantity}
+              </span>
 
               <button
                 type="button"
-                onClick={handleAddToCart}
-                className="h-11 min-w-0 flex-1 rounded-lg bg-green-700 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-green-800"
+                aria-label="Increase quantity"
+                onClick={() =>
+                  setQuantity((current) =>
+                    current + 1
+                  )
+                }
+                className="flex h-full w-7 items-center justify-center text-sm text-gray-600 hover:bg-gray-50 hover:text-green-700 sm:w-9 sm:text-base"
               >
-                Add to Cart
+                +
               </button>
-
-          <button
-            type="button"
-            onClick={handleBuyNow}
-            className="h-11 w-full min-w-0 rounded-lg bg-cyan-500 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-cyan-600"
-          >
-            Buy It Now
-          </button>
             </div>
 
-            {cartMessage && (
-              <p className="col-span-3 mt-2 break-words text-xs font-medium text-green-700">
-                {cartMessage}
-              </p>
-            )}
+            {/* ADD TO CART */}
+
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="h-10 min-w-0 rounded-lg bg-green-700 px-2 text-[10px] font-semibold text-white shadow-sm transition hover:bg-green-800 sm:h-11 sm:px-3 sm:text-xs"
+            >
+              Add to Cart
+            </button>
+
+            {/* BUY IT NOW */}
+
+            <button
+              type="button"
+              onClick={handleBuyNow}
+              className="h-10 min-w-0 rounded-lg bg-cyan-500 px-2 text-[10px] font-semibold text-white shadow-sm transition hover:bg-cyan-600 sm:h-11 sm:px-3 sm:text-xs"
+            >
+              Buy It Now
+            </button>
           </div>
 
-          {/* =================================================
-              WHATSAPP
-          ================================================= */}
+          {cartMessage && (
+            <p className="mt-2 break-words text-xs font-medium text-green-700">
+              {cartMessage}
+            </p>
+          )}
+
+          {/* ORDER ON WHATSAPP — MOBILE */}
 
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-green-600 bg-white px-4 text-sm font-semibold text-green-700 transition hover:bg-green-50"
+            className="mt-2 flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-green-600 bg-white px-3 text-xs font-semibold text-green-700 transition hover:bg-green-50 sm:h-11 sm:text-sm"
           >
             <svg
               viewBox="0 0 24 24"
               className="h-4 w-4 shrink-0 fill-current"
               aria-hidden="true"
             >
-              <path d="M20.52 3.48A11.84 11.84 0 0 0 12.07 0C5.52 0 .2 5.32.2 11.87c0 2.09.55 4.13 1.59 5.92L.1 24l6.35-1.66a11.83 11.83 0 0 0 5.62 1.43h.01c6.54 0 11.86-5.32 11.86-11.87 0-3.17-1.23-6.15-3.42-8.42ZM12.08 21.7h-.01a9.82 9.82 0 0 1-5.01-1.37l-.36-.21-3.77.99 1.01-3.68-.23-.38a9.83 9.83 0 1 1 8.37 4.65Zm5.4-7.37c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.23-.66.08-.3-.15-1.26-.46-2.4-1.46-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.69-1.66-.94-2.27-.25-.59-.5-.51-.69-.52h-.58c-.2 0-.53.08-.81.38-.28.3-1.06 1.04-1.06 2.54s1.09 2.95 1.24 3.15c.15.2 2.14 3.27 5.19 4.59.73.32 1.3.51 1.74.65.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35Z" />
+              <path d="M20.52 3.48A11.84 11.84 0 0 0 12.07 0C5.52 0 .2 5.32.2 11.87c0 2.09.55 4.13 1.59 5.92L.1 24l6.35-1.66a11.83 11.83 0 0 0 5.62 1.43h.01c6.54 0 11.86-5.32 11.87-11.87 0-3.17-1.23-6.15-3.42-8.42ZM12.08 21.7h-.01a9.82 9.82 0 0 1-5.01-1.37l-.36-.21-3.77.99 1.01-3.68-.23-.38a9.83 9.83 0 1 1 8.37 4.65Zm5.4-7.37c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.23-.66.08-.3-.15-1.26-.46-2.4-1.46-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.69-1.66-.94-2.27-.25-.59-.5-.51-.69-.52h-.58c-.2 0-.53.08-.81.38-.28.3-1.06 1.04-1.06 2.54s1.09 2.95 1.24 3.15c.15.2 2.14 3.27 5.19 4.59.73.32 1.3.51 1.74.65.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35Z" />
             </svg>
 
             <span>Order on WhatsApp</span>
           </a>
-
-
         </div>
-      </section>
 
+        {/* =================================================
+            PRODUCT TABS
+            Mobile: below the complete right-side information
+            Desktop: under the image column
+        ================================================= */}
+
+        <section className="col-span-2 min-w-0 border-t border-gray-100 pt-5 lg:col-span-1 lg:mt-7">
+          <div className="w-full min-w-0 overflow-x-auto overflow-y-hidden">
+            <div className="flex min-w-max border-b border-gray-200">
+              {tabs.map((tab) => {
+                const active =
+                  activeTab === tab.id;
+
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() =>
+                      setActiveTab(tab.id)
+                    }
+                    className={`relative shrink-0 px-3 py-2.5 text-center transition sm:min-w-[105px] ${
+                      active
+                        ? "text-green-700"
+                        : "text-gray-500 hover:text-green-700"
+                    }`}
+                  >
+                    <span className="block text-xs font-semibold sm:text-sm">
+                      {tab.label}
+                    </span>
+
+                    <span
+                      dir="rtl"
+                      className="mt-0.5 block text-[10px] text-gray-500"
+                    >
+                      {tab.urdu}
+                    </span>
+
+                    {active && (
+                      <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-green-700" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-5 min-w-0">
+            {activeTab === "description" && (
+              <InfoContent
+                englishTitle="Description"
+                urduTitle="تفصیل"
+                english={product.description}
+                urdu={product.description_urdu}
+                empty="No description available."
+              />
+            )}
+
+            {activeTab === "benefits" && (
+              <InfoContent
+                englishTitle="Benefits"
+                urduTitle="فوائد"
+                english={product.benefits}
+                urdu={product.benefits_urdu}
+                empty="No benefits information available."
+              />
+            )}
+
+            {activeTab === "ingredients" && (
+              <InfoContent
+                englishTitle="Ingredients"
+                urduTitle="اجزاء"
+                english={product.ingredients}
+                urdu={product.ingredients_urdu}
+                empty="No ingredients information available."
+              />
+            )}
+
+            {activeTab === "usage" && (
+              <InfoContent
+                englishTitle="How to Use"
+                urduTitle="طریقہ استعمال"
+                english={product.usage}
+                urdu={product.usage_urdu}
+                empty="No usage information available."
+              />
+            )}
+
+            {activeTab === "reviews" && (
+              <ReviewsSection
+                reviews={reviews}
+                reviewSummary={reviewSummary}
+                reviewsLoading={reviewsLoading}
+                reviewsError={reviewsError}
+                showReviewForm={showReviewForm}
+                setShowReviewForm={setShowReviewForm}
+                reviewSubmitting={reviewSubmitting}
+                reviewSuccess={reviewSuccess}
+                reviewSubmitError={reviewSubmitError}
+                customerName={customerName}
+                setCustomerName={setCustomerName}
+                reviewTitle={reviewTitle}
+                setReviewTitle={setReviewTitle}
+                reviewText={reviewText}
+                setReviewText={setReviewText}
+                reviewRating={reviewRating}
+                setReviewRating={setReviewRating}
+                hoverRating={hoverRating}
+                setHoverRating={setHoverRating}
+                handleReviewSubmit={handleReviewSubmit}
+                renderStars={renderStars}
+                formatReviewDate={formatReviewDate}
+              />
+            )}
+          </div>
+        </section>
+
+      </section>
     </div>
   );
 }
@@ -1683,7 +1734,7 @@ function ReviewsSection({
                   className="min-w-0 p-4"
                 >
                   <div className="flex flex-wrap items-center gap-2">
-                    <h5 className="break-words text-xs font-semibold text-gray-900">
+                    <h5 className="break-words text-[10px] font-semibold text-gray-900 sm:text-xs">
                       {review.customer_name}
                     </h5>
 
