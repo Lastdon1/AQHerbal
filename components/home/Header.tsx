@@ -21,7 +21,9 @@ type SearchLanguage = "en" | "ur";
 
 type SearchAreaProps = {
   search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setSearch: React.Dispatch<
+    React.SetStateAction<string>
+  >;
   language: SearchLanguage;
   onProductClick: () => void;
 };
@@ -121,17 +123,44 @@ function SearchArea({
   };
 
   return (
-    <div className="relative box-border w-full max-w-full min-w-0">
+    <div
+      className="
+        relative
+        w-full
+        min-w-0
+        max-w-full
+        overflow-visible
+      "
+    >
       {/* ======================================================
           SEARCH INPUT
       ======================================================= */}
 
-      <div className="relative box-border w-full max-w-full min-w-0">
+      <div
+        className="
+          relative
+          w-full
+          min-w-0
+          max-w-full
+          overflow-hidden
+          rounded-full
+        "
+      >
         <Search
           size={18}
-          className={`pointer-events-none absolute top-1/2 z-10 -translate-y-1/2 text-gray-400 ${
-            isUrdu ? "right-4" : "left-4"
-          }`}
+          className={`
+            pointer-events-none
+            absolute
+            top-1/2
+            z-10
+            -translate-y-1/2
+            text-gray-400
+            ${
+              isUrdu
+                ? "right-4"
+                : "left-4"
+            }
+          `}
         />
 
         <input
@@ -154,11 +183,32 @@ function SearchArea({
           lang={isUrdu ? "ur" : "en"}
           autoComplete="off"
           spellCheck={false}
-          className={`box-border h-12 w-full max-w-full min-w-0 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-800 outline-none transition focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 ${
-            isUrdu
-              ? "pl-12 pr-11 text-right"
-              : "pl-11 pr-12 text-left"
-          }`}
+          className={`
+            block
+            h-12
+            w-full
+            min-w-0
+            max-w-full
+            box-border
+            appearance-none
+            rounded-full
+            border
+            border-gray-200
+            bg-gray-50
+            text-sm
+            text-gray-800
+            outline-none
+            transition
+            focus:border-green-600
+            focus:bg-white
+            focus:ring-2
+            focus:ring-green-100
+            ${
+              isUrdu
+                ? "pl-12 pr-11 text-right"
+                : "pl-11 pr-12 text-left"
+            }
+          `}
         />
 
         {search && (
@@ -166,9 +216,26 @@ function SearchArea({
             type="button"
             onClick={clearSearch}
             aria-label="Clear search"
-            className={`absolute top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 ${
-              isUrdu ? "left-3" : "right-3"
-            }`}
+            className={`
+              absolute
+              top-1/2
+              flex
+              h-8
+              w-8
+              -translate-y-1/2
+              items-center
+              justify-center
+              rounded-full
+              text-gray-400
+              transition
+              hover:bg-gray-100
+              hover:text-gray-700
+              ${
+                isUrdu
+                  ? "left-3"
+                  : "right-3"
+              }
+            `}
           >
             <X size={15} />
           </button>
@@ -188,11 +255,10 @@ function SearchArea({
             top-full
             z-[200]
             mt-2
-            box-border
-            w-full
-            max-w-full
-            min-w-0
             max-h-[420px]
+            w-full
+            min-w-0
+            max-w-full
             overflow-x-hidden
             overflow-y-auto
             rounded-2xl
@@ -207,11 +273,18 @@ function SearchArea({
             <>
               <div
                 dir={isUrdu ? "rtl" : "ltr"}
-                className={`px-3 pb-2 pt-1 text-xs text-gray-400 ${
-                  isUrdu
-                    ? "text-right"
-                    : "text-left"
-                }`}
+                className={`
+                  px-3
+                  pb-2
+                  pt-1
+                  text-xs
+                  text-gray-400
+                  ${
+                    isUrdu
+                      ? "text-right"
+                      : "text-left"
+                  }
+                `}
               >
                 {results.length}{" "}
                 {isUrdu
@@ -228,12 +301,11 @@ function SearchArea({
                   onClick={onProductClick}
                   className="
                     flex
-                    w-full
-                    max-w-full
                     min-w-0
-                    box-border
+                    max-w-full
                     items-center
                     gap-3
+                    overflow-hidden
                     rounded-xl
                     p-3
                     transition
@@ -256,7 +328,10 @@ function SearchArea({
                       alt={product.name}
                       fill
                       sizes="56px"
-                      className="object-contain p-1"
+                      className="
+                        object-contain
+                        p-1
+                      "
                     />
                   </div>
 
@@ -307,9 +382,6 @@ function SearchArea({
           ) : (
             <div
               className="
-                box-border
-                w-full
-                max-w-full
                 px-4
                 py-9
                 text-center
@@ -412,10 +484,9 @@ export default function Header() {
   return (
     <header
       className="
-        box-border
         w-full
-        max-w-full
         min-w-0
+        max-w-full
         overflow-x-hidden
         border-b
         bg-white
@@ -428,7 +499,6 @@ export default function Header() {
       <div
         className="
           mx-auto
-          box-border
           flex
           min-h-[82px]
           w-full
@@ -477,12 +547,12 @@ export default function Header() {
 
           <div
             className="
-              ml-2
               flex
               min-w-0
               flex-col
               justify-center
               leading-tight
+              ml-2
               sm:ml-3
             "
           >
@@ -571,7 +641,6 @@ export default function Header() {
               mx-auto
               w-full
               max-w-2xl
-              min-w-0
             "
           >
             <SearchArea
@@ -738,16 +807,21 @@ export default function Header() {
 
       {/* ======================================================
           MOBILE SEARCH ROW
+
+          IMPORTANT:
+          These width constraints are specifically for
+          preventing the mobile search from expanding the
+          viewport when the input receives focus.
       ======================================================= */}
 
       {searchOpen && (
         <div
           className="
-            box-border
             w-full
-            max-w-full
             min-w-0
-            overflow-hidden
+            max-w-full
+            overflow-x-hidden
+            overflow-y-visible
             border-t
             bg-white
             px-3
@@ -758,11 +832,10 @@ export default function Header() {
         >
           <div
             className="
-              box-border
               w-full
-              max-w-full
               min-w-0
-              overflow-hidden
+              max-w-full
+              overflow-visible
             "
           >
             <SearchArea
