@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -122,16 +121,12 @@ function SearchArea({
   };
 
   return (
-    <div className="relative w-full">
-
+    <div className="relative w-full min-w-0">
       {/* ======================================================
           SEARCH INPUT
       ======================================================= */}
 
-      <div className="relative">
-
-        {/* Search Icon */}
-
+      <div className="relative min-w-0">
         <Search
           size={18}
           className={`
@@ -141,7 +136,6 @@ function SearchArea({
             z-10
             -translate-y-1/2
             text-gray-400
-
             ${
               isUrdu
                 ? "right-4"
@@ -149,10 +143,6 @@ function SearchArea({
             }
           `}
         />
-
-        {/* ==================================================
-            INPUT
-        =================================================== */}
 
         <input
           type="text"
@@ -177,6 +167,7 @@ function SearchArea({
           className={`
             h-12
             w-full
+            min-w-0
             rounded-full
             border
             border-gray-200
@@ -185,12 +176,10 @@ function SearchArea({
             text-gray-800
             outline-none
             transition
-
             focus:border-green-600
             focus:bg-white
             focus:ring-2
             focus:ring-green-100
-
             ${
               isUrdu
                 ? "pl-12 pr-11 text-right"
@@ -222,7 +211,6 @@ function SearchArea({
               transition
               hover:bg-gray-100
               hover:text-gray-700
-
               ${
                 isUrdu
                   ? "left-3"
@@ -233,11 +221,10 @@ function SearchArea({
             <X size={15} />
           </button>
         )}
-
       </div>
 
       {/* ======================================================
-          SEARCH RESULTS DROPDOWN
+          SEARCH RESULTS
       ======================================================= */}
 
       {search.trim() && (
@@ -251,6 +238,7 @@ function SearchArea({
             mt-2
             max-h-[420px]
             overflow-y-auto
+            overflow-x-hidden
             rounded-2xl
             border
             border-gray-100
@@ -259,10 +247,8 @@ function SearchArea({
             shadow-2xl
           "
         >
-
           {results.length > 0 ? (
             <>
-
               {/* Result Count */}
 
               <div
@@ -273,7 +259,6 @@ function SearchArea({
                   pt-1
                   text-xs
                   text-gray-400
-
                   ${
                     isUrdu
                       ? "text-right"
@@ -289,9 +274,7 @@ function SearchArea({
                     : "results"}
               </div>
 
-              {/* ==================================================
-                  PRODUCT RESULTS
-              =================================================== */}
+              {/* Product Results */}
 
               {results.map((product) => (
                 <Link
@@ -300,6 +283,7 @@ function SearchArea({
                   onClick={onProductClick}
                   className="
                     flex
+                    min-w-0
                     items-center
                     gap-3
                     rounded-xl
@@ -308,7 +292,6 @@ function SearchArea({
                     hover:bg-green-50
                   "
                 >
-
                   {/* Product Image */}
 
                   <div
@@ -337,7 +320,6 @@ function SearchArea({
                   {/* Product Details */}
 
                   <div className="min-w-0 flex-1">
-
                     {/* Urdu Product Name */}
 
                     <p
@@ -383,15 +365,11 @@ function SearchArea({
                         product.price
                       ).toLocaleString()}
                     </p>
-
                   </div>
-
                 </Link>
               ))}
-
             </>
           ) : (
-
             /* ==================================================
                NO RESULTS
             =================================================== */
@@ -416,12 +394,9 @@ function SearchArea({
                   : "No products found"}
               </p>
             </div>
-
           )}
-
         </div>
       )}
-
     </div>
   );
 }
@@ -456,10 +431,6 @@ export default function Header() {
       setLanguage(savedLanguage);
     }
 
-    /* ========================================================
-       LISTEN FOR ANNOUNCEMENT BAR LANGUAGE CHANGE
-    ======================================================== */
-
     const handleLanguageChange = (
       event: Event
     ) => {
@@ -470,9 +441,10 @@ export default function Header() {
         customEvent.detail === "en" ||
         customEvent.detail === "ur"
       ) {
-        setLanguage(customEvent.detail);
+        setLanguage(
+          customEvent.detail
+        );
 
-        // Clear old search when switching language
         setSearch("");
       }
     };
@@ -504,8 +476,15 @@ export default function Header() {
   ============================================================ */
 
   return (
-    <header className="w-full border-b bg-white">
-
+    <header
+      className="
+        w-full
+        min-w-0
+        overflow-x-hidden
+        border-b
+        bg-white
+      "
+    >
       {/* ======================================================
           MAIN HEADER ROW
       ======================================================= */}
@@ -515,13 +494,16 @@ export default function Header() {
           mx-auto
           flex
           min-h-[82px]
+          w-full
           max-w-7xl
+          min-w-0
           items-center
           gap-5
-          px-6
+          overflow-hidden
+          px-3
+          sm:px-6
         "
       >
-
         {/* ==================================================
             LOGO
         =================================================== */}
@@ -531,9 +513,9 @@ export default function Header() {
           aria-label="ISACO Home"
           className="
             flex
+            min-w-0
             shrink-0
             items-center
-            gap-3
           "
         >
           <Image
@@ -545,19 +527,24 @@ export default function Header() {
             className="
               h-auto
               w-[105px]
+              max-w-full
               object-contain
               sm:w-[120px]
             "
           />
 
-          {/* ==================================================
-              ISACO BRAND TEXT
-          =================================================== */}
+          {/* =================================================
+              DESKTOP BRAND TEXT
+              UNCHANGED
+          ================================================= */}
 
           <div
             className="
+              hidden
               leading-tight
-              "
+              sm:block
+              sm:ml-3
+            "
           >
             <p
               className="
@@ -570,37 +557,81 @@ export default function Header() {
             </p>
 
             <p
+              className="
+                max-w-[210px]
+                text-[10px]
+                leading-4
+                text-gray-500
+              "
+            >
+              Inspired by Tibb-e-Nabawi (ﷺ),
+              Trusted for Wellness.
+            </p>
+          </div>
+
+          {/* =================================================
+              MOBILE BRANDING ONLY
+          ================================================= */}
+
+          <div
+            className="
+              ml-2
+              min-w-0
+              leading-tight
+              sm:hidden
+            "
+          >
+            {/* ISACO */}
+
+            <p
+              className="
+                text-sm
+                font-bold
+                leading-4
+                text-green-800
+              "
+            >
+              ISACO
+            </p>
+
+            {/* Urdu Brand */}
+
+            <p
               dir="rtl"
               lang="ur"
               className="
                 mt-0.5
-                text-[13px]
+                text-[11px]
                 font-semibold
-                leading-6
+                leading-5
                 text-green-800
               "
             >
               آئی ساکو
             </p>
 
+            {/* Founder */}
+
             <p
               dir="rtl"
               lang="ur"
               className="
-                text-[9px]
-                leading-4
+                text-[7px]
+                leading-3
                 text-gray-500
               "
             >
               مرحوم حکیم عبدالعلی خان رحمہ اللہ علی
             </p>
 
+            {/* Original Founder */}
+
             <p
               dir="rtl"
               lang="ur"
               className="
-                text-[9px]
-                leading-4
+                text-[7px]
+                leading-3
                 text-gray-500
               "
             >
@@ -621,14 +652,13 @@ export default function Header() {
             md:block
           "
         >
-
           <div
             className="
               mx-auto
+              w-full
               max-w-2xl
             "
           >
-
             <SearchArea
               search={search}
               setSearch={setSearch}
@@ -637,9 +667,7 @@ export default function Header() {
                 handleProductClick
               }
             />
-
           </div>
-
         </div>
 
         {/* ==================================================
@@ -652,14 +680,12 @@ export default function Header() {
             flex
             shrink-0
             items-center
-            gap-1
-            sm:gap-2
+            justify-end
           "
         >
-
-          {/* ==================================================
-              LOGIN
-          =================================================== */}
+          {/* =================================================
+              DESKTOP LOGIN
+          ================================================= */}
 
           <Link
             href="/login"
@@ -686,15 +712,15 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* ==================================================
-              WISHLIST
-          =================================================== */}
+          {/* =================================================
+              DESKTOP WISHLIST
+          ================================================= */}
 
           <Link
             href="/wishlist"
             aria-label="Wishlist"
             className="
-              flex
+              hidden
               h-10
               w-10
               items-center
@@ -704,20 +730,21 @@ export default function Header() {
               transition
               hover:bg-green-50
               hover:text-green-700
+              sm:flex
             "
           >
             <Heart size={20} />
           </Link>
 
-          {/* ==================================================
-              CART
-          =================================================== */}
+          {/* =================================================
+              DESKTOP CART
+          ================================================= */}
 
           <Link
             href="/cart"
             aria-label="Shopping Cart"
             className="
-              flex
+              hidden
               h-10
               w-10
               items-center
@@ -727,14 +754,40 @@ export default function Header() {
               transition
               hover:bg-green-50
               hover:text-green-700
+              sm:flex
             "
           >
             <ShoppingCart size={20} />
           </Link>
 
-          {/* ==================================================
-              MOBILE SEARCH
-          =================================================== */}
+          {/* =================================================
+              MOBILE USER
+          ================================================= */}
+
+          <Link
+            href="/login"
+            aria-label="Login"
+            className="
+              flex
+              h-10
+              w-10
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              text-gray-700
+              transition
+              hover:bg-green-50
+              hover:text-green-700
+              sm:hidden
+            "
+          >
+            <User size={21} />
+          </Link>
+
+          {/* =================================================
+              MOBILE SEARCH BUTTON
+          ================================================= */}
 
           <button
             type="button"
@@ -745,9 +798,10 @@ export default function Header() {
             }
             aria-label="Search"
             className="
-              flex
+              hidden
               h-10
               w-10
+              shrink-0
               items-center
               justify-center
               rounded-full
@@ -764,26 +818,27 @@ export default function Header() {
               <Search size={21} />
             )}
           </button>
-
         </div>
-
       </div>
 
       {/* ======================================================
-          MOBILE SEARCH
+          MOBILE SEARCH ROW
       ======================================================= */}
 
       {searchOpen && (
         <div
           className="
+            w-full
+            min-w-0
+            overflow-hidden
             border-t
             bg-white
-            px-6
+            px-3
             py-3
+            sm:px-6
             md:hidden
           "
         >
-
           <SearchArea
             search={search}
             setSearch={setSearch}
@@ -792,11 +847,8 @@ export default function Header() {
               handleProductClick
             }
           />
-
         </div>
       )}
-
     </header>
   );
 }
-
