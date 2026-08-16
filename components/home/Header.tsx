@@ -21,7 +21,9 @@ type SearchLanguage = "en" | "ur";
 
 type SearchAreaProps = {
   search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setSearch: React.Dispatch<
+    React.SetStateAction<string>
+  >;
   language: SearchLanguage;
   onProductClick: () => void;
 };
@@ -188,10 +190,6 @@ function SearchArea({
           `}
         />
 
-        {/* ==================================================
-            CLEAR BUTTON
-        =================================================== */}
-
         {search && (
           <button
             type="button"
@@ -249,8 +247,6 @@ function SearchArea({
         >
           {results.length > 0 ? (
             <>
-              {/* Result Count */}
-
               <div
                 dir={isUrdu ? "rtl" : "ltr"}
                 className={`
@@ -274,8 +270,6 @@ function SearchArea({
                     : "results"}
               </div>
 
-              {/* Product Results */}
-
               {results.map((product) => (
                 <Link
                   key={product.id}
@@ -292,8 +286,6 @@ function SearchArea({
                     hover:bg-green-50
                   "
                 >
-                  {/* Product Image */}
-
                   <div
                     className="
                       relative
@@ -317,11 +309,7 @@ function SearchArea({
                     />
                   </div>
 
-                  {/* Product Details */}
-
                   <div className="min-w-0 flex-1">
-                    {/* Urdu Product Name */}
-
                     <p
                       dir="rtl"
                       className="
@@ -335,8 +323,6 @@ function SearchArea({
                       {product.nameUrdu}
                     </p>
 
-                    {/* English Product Name */}
-
                     <p
                       dir="ltr"
                       className="
@@ -349,8 +335,6 @@ function SearchArea({
                     >
                       {product.name}
                     </p>
-
-                    {/* Price */}
 
                     <p
                       dir="ltr"
@@ -370,10 +354,6 @@ function SearchArea({
               ))}
             </>
           ) : (
-            /* ==================================================
-               NO RESULTS
-            =================================================== */
-
             <div
               className="
                 px-4
@@ -406,7 +386,8 @@ function SearchArea({
 ============================================================ */
 
 export default function Header() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] =
+    useState("");
 
   const [language, setLanguage] =
     useState<SearchLanguage>("en");
@@ -505,7 +486,7 @@ export default function Header() {
         "
       >
         {/* ==================================================
-            LOGO
+            LOGO + BRANDING
         =================================================== */}
 
         <Link
@@ -534,61 +515,29 @@ export default function Header() {
           />
 
           {/* =================================================
-              DESKTOP BRAND TEXT
-              UNCHANGED
+              ISACO BRANDING
+              Mobile + Desktop
           ================================================= */}
 
           <div
             className="
-              hidden
+              flex
+              min-w-0
+              flex-col
+              justify-center
               leading-tight
-              sm:block
+              ml-2
               sm:ml-3
             "
           >
-            <p
-              className="
-                text-lg
-                font-bold
-                text-green-800
-              "
-            >
-              ISACO
-            </p>
-
-            <p
-              className="
-                max-w-[210px]
-                text-[10px]
-                leading-4
-                text-gray-500
-              "
-            >
-              Inspired by Tibb-e-Nabawi (ﷺ),
-              Trusted for Wellness.
-            </p>
-          </div>
-
-          {/* =================================================
-              MOBILE BRANDING ONLY
-          ================================================= */}
-
-          <div
-            className="
-              ml-2
-              min-w-0
-              leading-tight
-              sm:hidden
-            "
-          >
-            {/* ISACO */}
+            {/* English Brand */}
 
             <p
               className="
                 text-sm
                 font-bold
-                leading-4
                 text-green-800
+                sm:text-lg
               "
             >
               ISACO
@@ -601,10 +550,13 @@ export default function Header() {
               lang="ur"
               className="
                 mt-0.5
+                whitespace-nowrap
                 text-[11px]
                 font-semibold
                 leading-5
                 text-green-800
+                sm:text-[13px]
+                sm:leading-6
               "
             >
               آئی ساکو
@@ -616,23 +568,29 @@ export default function Header() {
               dir="rtl"
               lang="ur"
               className="
-                text-[7px]
+                whitespace-nowrap
+                text-[8px]
                 leading-3
                 text-gray-500
+                sm:text-[9px]
+                sm:leading-4
               "
             >
               مرحوم حکیم عبدالعلی خان رحمہ اللہ علی
             </p>
 
-            {/* Original Founder */}
+            {/* Founder Line */}
 
             <p
               dir="rtl"
               lang="ur"
               className="
-                text-[7px]
+                whitespace-nowrap
+                text-[8px]
                 leading-3
                 text-gray-500
+                sm:text-[9px]
+                sm:leading-4
               "
             >
               بانیِ مشرقی دواخانہ
