@@ -222,7 +222,7 @@ function SearchBox({
               setSearch("")
             }
             aria-label="Clear search"
-            className={`
+            className="
               absolute
               top-1/2
               flex
@@ -237,7 +237,7 @@ function SearchBox({
               hover:text-gray-700
               ltr:right-3
               rtl:left-3
-            `}
+            "
           >
             <X size={15} />
           </button>
@@ -250,6 +250,7 @@ function SearchBox({
 
       {showResults && (
         <div className="absolute left-0 right-0 top-full z-[200] mt-2 max-h-[420px] overflow-y-auto rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl">
+
           {/* Loading */}
 
           {loading && (
@@ -855,16 +856,24 @@ export default function Header() {
 
   return (
     <header className="w-full border-b bg-white">
-      <div className="mx-auto flex min-h-[78px] max-w-7xl items-center gap-5 px-6">
+      <div className="mx-auto flex min-h-[78px] max-w-7xl items-center gap-3 px-3 sm:gap-5 sm:px-6">
 
         {/* ==================================================
-            LOGO
+            LOGO + BRANDING
         =================================================== */}
 
         <Link
           href="/"
           aria-label="آئی ساکو ہوم"
-          className="flex shrink-0 items-center gap-3"
+          className="
+            flex
+            min-w-0
+            flex-1
+            items-center
+            gap-2
+            sm:flex-none
+            sm:gap-3
+          "
         >
           <Image
             src="/logos/logo.webp"
@@ -872,10 +881,63 @@ export default function Header() {
             width={140}
             height={50}
             priority
-            className="h-[45px] w-[110px] object-contain sm:h-[65px]"
+            className="
+              h-[45px]
+              w-[110px]
+              shrink-0
+              object-contain
+              sm:h-[65px]
+            "
           />
 
-          <div className="hidden text-center sm:block">
+          {/* ==================================================
+              MOBILE BRANDING
+          =================================================== */}
+
+          <div
+            className="
+              min-w-0
+              flex-1
+              text-center
+              sm:hidden
+            "
+          >
+            <p
+              dir="rtl"
+              lang="ur"
+              className="
+                text-[14px]
+                font-bold
+                leading-tight
+                text-green-800
+              "
+            >
+              آئی ساکو
+            </p>
+
+            <p
+              dir="rtl"
+              lang="ur"
+              className="
+                mt-0.5
+                text-[8px]
+                leading-3
+                text-gray-700
+              "
+            >
+              {siteSettings.logo_text_urdu}
+
+              <br />
+
+              {siteSettings.tagline_urdu}
+            </p>
+          </div>
+
+          {/* ==================================================
+              DESKTOP BRANDING
+          =================================================== */}
+
+          <div className="hidden shrink-0 text-center sm:block">
             <p
               dir="rtl"
               lang="ur"
@@ -921,7 +983,7 @@ export default function Header() {
             RIGHT SIDE
         =================================================== */}
 
-        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
+        <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-2">
 
           {/* ACCOUNT */}
 
@@ -934,7 +996,22 @@ export default function Header() {
                   handleAdminLogout
                 }
                 aria-label="Admin Logout"
-                className="flex h-10 items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-medium text-red-600 transition hover:bg-red-50 hover:text-red-700"
+                className="
+                  flex
+                  h-10
+                  items-center
+                  justify-center
+                  gap-1.5
+                  rounded-lg
+                  px-2
+                  text-sm
+                  font-medium
+                  text-red-600
+                  transition
+                  hover:bg-red-50
+                  hover:text-red-700
+                  sm:px-3
+                "
               >
                 <LogOut size={19} />
 
@@ -956,7 +1033,22 @@ export default function Header() {
                     ? "My Account"
                     : "Customer Login"
                 }
-                className="flex h-10 items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-medium text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+                className="
+                  flex
+                  h-10
+                  w-10
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-gray-700
+                  transition
+                  hover:bg-green-50
+                  hover:text-green-700
+                  sm:w-auto
+                  sm:gap-1.5
+                  sm:rounded-lg
+                  sm:px-3
+                "
               >
                 <User size={19} />
 
@@ -1019,7 +1111,19 @@ export default function Header() {
                 toggleMobileSearch
               }
               aria-label="Search"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-gray-700 transition hover:bg-green-50 hover:text-green-700 md:hidden"
+              className="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-full
+                text-gray-700
+                transition
+                hover:bg-green-50
+                hover:text-green-700
+                md:hidden
+              "
             >
               {mobileSearchOpen ? (
                 <X size={21} />
@@ -1037,7 +1141,7 @@ export default function Header() {
 
       {mobileSearchOpen &&
         !isAdminPage && (
-          <div className="border-t bg-white px-6 py-3 md:hidden">
+          <div className="border-t bg-white px-3 py-3 sm:px-6 md:hidden">
             <SearchBox
               language={language}
               search={search}

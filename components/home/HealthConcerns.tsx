@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -22,22 +21,17 @@ type Props = {
 export default function HealthConcerns({
   healthConcerns,
 }: Props) {
-  const sliderRef =
-    useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
-  const [showLeft, setShowLeft] =
-    useState(false);
-
-  const [showRight, setShowRight] =
-    useState(false);
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(false);
 
   /* ============================================================
      UPDATE ARROWS
   ============================================================ */
 
   const updateArrows = () => {
-    const slider =
-      sliderRef.current;
+    const slider = sliderRef.current;
 
     if (!slider) {
       return;
@@ -49,9 +43,7 @@ export default function HealthConcerns({
       clientWidth,
     } = slider;
 
-    setShowLeft(
-      scrollLeft > 10
-    );
+    setShowLeft(scrollLeft > 10);
 
     setShowRight(
       scrollLeft <
@@ -68,8 +60,7 @@ export default function HealthConcerns({
   const slide = (
     direction: "left" | "right"
   ) => {
-    const slider =
-      sliderRef.current;
+    const slider = sliderRef.current;
 
     if (!slider) {
       return;
@@ -83,10 +74,6 @@ export default function HealthConcerns({
       behavior: "smooth",
     });
 
-    /*
-     * Give the browser a moment to update the
-     * scroll position before checking the arrows.
-     */
     window.setTimeout(
       updateArrows,
       350
@@ -129,27 +116,67 @@ export default function HealthConcerns({
       id="health-concerns"
       className="
         mx-auto
+        w-full
         max-w-7xl
+        min-w-0
         scroll-mt-20
-        px-6
-        py-12
+        px-4
+        py-8
+        sm:px-6
+        sm:py-12
       "
     >
       {/* ========================================================
           HEADING
       ========================================================= */}
 
-      <div className="mb-10 text-center">
-        <h2 className="text-3xl font-bold text-green-800">
+      <div
+        className="
+          mb-7
+          text-center
+          sm:mb-10
+        "
+      >
+        <h2
+          dir="rtl"
+          lang="ur"
+          className="
+            text-3xl
+            font-bold
+            leading-tight
+            text-green-800
+          "
+        >
           صحت کے مسائل
         </h2>
 
-        <p className="mt-1 text-lg text-gray-700">
+        <p
+          className="
+            mt-1
+            text-base
+            text-gray-700
+            sm:text-lg
+          "
+        >
           Health Concerns
         </p>
       </div>
 
-      <div className="relative">
+      {/* ========================================================
+          SLIDER WRAPPER
+
+          IMPORTANT:
+          This wrapper stays inside viewport.
+      ========================================================= */}
+
+      <div
+        className="
+          relative
+          w-full
+          min-w-0
+          max-w-full
+        "
+      >
         {/* ======================================================
             LEFT ARROW
         ======================================================= */}
@@ -180,9 +207,7 @@ export default function HealthConcerns({
               hover:text-white
             "
           >
-            <ChevronLeft
-              size={18}
-            />
+            <ChevronLeft size={18} />
           </button>
         )}
 
@@ -216,14 +241,21 @@ export default function HealthConcerns({
               hover:text-white
             "
           >
-            <ChevronRight
-              size={18}
-            />
+            <ChevronRight size={18} />
           </button>
         )}
 
         {/* ======================================================
-            HEALTH CONCERNS SLIDER
+            HORIZONTAL SLIDER
+
+            IMPORTANT:
+
+            Mobile:
+            - remains horizontally scrollable
+            - does NOT make whole page wider
+
+            Desktop:
+            - same horizontal slider
         ======================================================= */}
 
         <div
@@ -231,15 +263,22 @@ export default function HealthConcerns({
           onScroll={updateArrows}
           className="
             flex
-            gap-6
+            w-full
+            max-w-full
+            min-w-0
+            gap-5
             overflow-x-auto
             overflow-y-hidden
             scroll-smooth
-            px-4
-            pb-2
-                        [-ms-overflow-style:none]
+            px-3
+            pb-3
+
+            [-ms-overflow-style:none]
             [scrollbar-width:none]
             [&::-webkit-scrollbar]:hidden
+
+            sm:gap-6
+            sm:px-4
           "
         >
           {healthConcerns.length === 0 ? (
@@ -256,14 +295,22 @@ export default function HealthConcerns({
                   key={item.id}
                   className="
                     group
-                    min-w-[140px]
+                    w-[145px]
+                    min-w-[145px]
+                    max-w-[145px]
                     flex-shrink-0
                     text-center
                     transition-transform
                     duration-200
                     hover:-translate-y-1
+
+                    sm:w-[170px]
                     sm:min-w-[170px]
+                    sm:max-w-[170px]
+
+                    lg:w-[190px]
                     lg:min-w-[190px]
+                    lg:max-w-[190px]
                   "
                 >
                   {/* ==========================================
@@ -273,15 +320,18 @@ export default function HealthConcerns({
                   <div
                     className="
                       mx-auto
-                      mb-0
+                      mb-1
                       flex
-                      h-40
-                      w-40
+                      h-[135px]
+                      w-[135px]
                       items-center
                       justify-center
                       transition-transform
                       duration-200
                       group-hover:scale-[1.04]
+
+                      sm:h-40
+                      sm:w-40
                     "
                   >
                     {item.image ? (
@@ -290,11 +340,14 @@ export default function HealthConcerns({
                         alt={item.name}
                         width={160}
                         height={160}
-                        sizes="160px"
+                        sizes="
+                          (max-width: 639px) 135px,
+                          160px
+                        "
                         loading="lazy"
                         className="
-                          h-40
-                          w-40
+                          h-full
+                          w-full
                           object-contain
                         "
                       />
@@ -302,8 +355,8 @@ export default function HealthConcerns({
                       <div
                         className="
                           flex
-                          h-40
-                          w-40
+                          h-full
+                          w-full
                           items-center
                           justify-center
                           rounded-full
@@ -323,11 +376,14 @@ export default function HealthConcerns({
 
                   <p
                     dir="rtl"
+                    lang="ur"
                     className="
-                      text-lg
+                      text-base
                       font-semibold
                       leading-tight
                       text-green-700
+
+                      sm:text-lg
                     "
                   >
                     {item.name_urdu}
@@ -340,12 +396,15 @@ export default function HealthConcerns({
                   <h3
                     className="
                       mt-1
-                      text-sm
+                      text-[13px]
                       font-medium
+                      leading-tight
                       text-gray-800
                       transition-colors
                       duration-150
                       group-hover:text-green-700
+
+                      sm:text-sm
                     "
                   >
                     {item.name}
@@ -356,7 +415,17 @@ export default function HealthConcerns({
                   =========================================== */}
 
                   {item.description && (
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p
+                      className="
+                        mt-1
+                        line-clamp-2
+                        text-[11px]
+                        leading-4
+                        text-gray-500
+
+                        sm:text-xs
+                      "
+                    >
                       {item.description}
                     </p>
                   )}
@@ -369,4 +438,3 @@ export default function HealthConcerns({
     </section>
   );
 }
-

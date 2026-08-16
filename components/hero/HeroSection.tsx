@@ -39,35 +39,61 @@ export default function HeroSection() {
     );
   }
 
-  const hasTextContent =
+  const hasTextContent = Boolean(
     currentBanner.label ||
-    currentBanner.title ||
-    currentBanner.titleSecond ||
-    currentBanner.urdu;
+      currentBanner.title ||
+      currentBanner.titleSecond ||
+      currentBanner.urdu
+  );
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6">
-      <div className="relative overflow-hidden rounded-2xl shadow-sm sm:rounded-3xl">
-
+    <section
+      className="
+        mx-auto
+        w-full
+        max-w-7xl
+        min-w-0
+        overflow-hidden
+        px-4
+        py-4
+        sm:px-6
+        sm:py-6
+      "
+    >
+      <div
+        className="
+          relative
+          w-full
+          min-w-0
+          overflow-hidden
+          rounded-2xl
+          shadow-sm
+          sm:rounded-3xl
+        "
+      >
         {/* =================================================
             BANNER
         ================================================== */}
 
-        <div className="relative">
+        <div className="relative w-full min-w-0">
           <Image
             src={currentBanner.src}
             alt={currentBanner.alt}
             width={1920}
             height={420}
             priority={currentSlide === 0}
-            sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 48px), 1200px"
+            sizes="100vw"
             className="
+              block
               h-auto
               w-full
+              max-w-full
               object-contain
               object-center
+
               sm:min-h-[280px]
               sm:object-cover
+
               lg:min-h-0
             "
           />
@@ -96,7 +122,7 @@ export default function HeroSection() {
             <div
               className="
                 absolute
-                inset-2
+                inset-0
                 flex
                 items-start
                 sm:inset-5
@@ -105,30 +131,38 @@ export default function HeroSection() {
               <div
                 className="
                   w-full
-                  px-2
+                  min-w-0
+
+                  px-3
+                  pt-1
+
                   sm:px-8
+                  sm:pt-0
+
                   lg:px-12
                 "
               >
-
-                {/* Small Brand Label */}
+                {/* =================================================
+                    SMALL BRAND LABEL
+                ================================================== */}
 
                 {currentBanner.label && (
                   <div
                     className="
-                      mb-1
+                      mb-0.5
                       inline-flex
-                      max-w-[calc(100%-30px)]
+                      max-w-[calc(100%-50px)]
                       rounded-full
                       bg-white/85
                       px-2
                       py-0.5
-                      text-[7px]
+                      text-[6px]
                       font-semibold
                       tracking-wide
                       text-green-800
                       shadow-sm
                       backdrop-blur-sm
+
                       sm:mb-3
                       sm:max-w-none
                       sm:px-4
@@ -140,21 +174,26 @@ export default function HeroSection() {
                   </div>
                 )}
 
-                {/* Main Heading */}
+                {/* =================================================
+                    MAIN HEADING
+                ================================================== */}
 
                 {(currentBanner.title ||
                   currentBanner.titleSecond) && (
                   <h1
                     className="
-                      max-w-[150px]
-                      text-sm
+                      max-w-[160px]
+                      text-[13px]
                       font-bold
-                      leading-[1.15]
+                      leading-[1.1]
                       text-green-800
+
                       sm:max-w-md
                       sm:text-3xl
+
                       lg:max-w-xl
                       lg:text-4xl
+
                       xl:text-5xl
                     "
                   >
@@ -169,30 +208,33 @@ export default function HeroSection() {
                   </h1>
                 )}
 
-                {/* Urdu Heading */}
+                {/* =================================================
+                    URDU HEADING
+                ================================================== */}
 
                 {currentBanner.urdu && (
                   <p
                     dir="rtl"
                     lang="ur"
                     className="
-                      mt-0.5
-                      max-w-[160px]
-                      text-[10px]
+                      mt-0
+                      max-w-[170px]
+                      text-[8px]
                       font-semibold
-                      leading-4
+                      leading-3
                       text-green-900
+
                       sm:mt-1
                       sm:max-w-md
                       sm:text-xl
                       sm:leading-8
+
                       lg:text-2xl
                     "
                   >
                     {currentBanner.urdu}
                   </p>
                 )}
-
               </div>
             </div>
           )}
@@ -225,6 +267,7 @@ export default function HeroSection() {
             transition
             hover:bg-white
             hover:text-green-700
+
             sm:left-4
             sm:h-10
             sm:w-10
@@ -262,6 +305,7 @@ export default function HeroSection() {
             transition
             hover:bg-white
             hover:text-green-700
+
             sm:right-4
             sm:h-10
             sm:w-10
@@ -286,6 +330,7 @@ export default function HeroSection() {
             -translate-x-1/2
             items-center
             gap-1
+
             sm:bottom-4
             sm:gap-1.5
           "
@@ -304,7 +349,6 @@ export default function HeroSection() {
             />
           ))}
         </div>
-
       </div>
     </section>
   );

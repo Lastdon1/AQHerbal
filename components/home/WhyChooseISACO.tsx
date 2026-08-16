@@ -46,25 +46,25 @@ const features = [
 
 export default function WhyChooseISACO() {
   return (
-    <section className="bg-white py-10 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6">
+    <section className="w-full max-w-full overflow-hidden bg-white py-10 sm:py-16 lg:py-20">
+      <div className="mx-auto w-full max-w-7xl px-3 sm:px-6">
 
         {/* =====================================================
             SECTION HEADING
         ====================================================== */}
 
-        <div className="mx-auto mb-8 max-w-3xl text-center sm:mb-12">
+        <div className="mx-auto mb-8 w-full max-w-3xl text-center sm:mb-12">
 
           {/* Small Brand Label */}
 
-          <div className="mb-3 flex items-center justify-center gap-2 sm:mb-4 sm:gap-3">
-            <span className="h-px w-6 bg-[#b8a46a] sm:w-8" />
+          <div className="mb-3 flex w-full items-center justify-center gap-2 sm:mb-4 sm:gap-3">
+            <span className="h-px w-6 shrink-0 bg-[#b8a46a] sm:w-8" />
 
             <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#8b7745] sm:text-xs sm:tracking-[0.22em]">
               ISACO Wellness
             </span>
 
-            <span className="h-px w-6 bg-[#b8a46a] sm:w-8" />
+            <span className="h-px w-6 shrink-0 bg-[#b8a46a] sm:w-8" />
           </div>
 
           {/* Urdu Heading */}
@@ -72,6 +72,7 @@ export default function WhyChooseISACO() {
           <h2
             dir="rtl"
             className="
+              w-full
               text-2xl
               font-bold
               leading-relaxed
@@ -87,6 +88,7 @@ export default function WhyChooseISACO() {
           <p
             className="
               mt-1
+              w-full
               text-base
               font-semibold
               tracking-wide
@@ -109,6 +111,7 @@ export default function WhyChooseISACO() {
             className="
               mx-auto
               mt-3
+              w-full
               max-w-2xl
               text-xs
               leading-6
@@ -128,6 +131,7 @@ export default function WhyChooseISACO() {
             className="
               mx-auto
               mt-1
+              w-full
               max-w-2xl
               text-xs
               leading-5
@@ -148,6 +152,8 @@ export default function WhyChooseISACO() {
         <div
           className="
             relative
+            w-full
+            max-w-full
             overflow-hidden
             rounded-[1.25rem]
             bg-[#f1f3ed]
@@ -172,6 +178,7 @@ export default function WhyChooseISACO() {
               -top-24
               h-64
               w-64
+              max-w-none
               rounded-full
               bg-green-700
             "
@@ -185,6 +192,7 @@ export default function WhyChooseISACO() {
               -left-24
               h-72
               w-72
+              max-w-none
               rounded-full
               bg-green-700
             "
@@ -198,6 +206,8 @@ export default function WhyChooseISACO() {
             className="
               relative
               grid
+              w-full
+              max-w-full
               grid-cols-2
               gap-2
               sm:grid-cols-2
@@ -213,6 +223,9 @@ export default function WhyChooseISACO() {
                   key={feature.title}
                   className="
                     group
+                    min-w-0
+                    max-w-full
+                    overflow-hidden
                     rounded-xl
                     bg-white
                     px-2
@@ -239,6 +252,7 @@ export default function WhyChooseISACO() {
                       flex
                       h-11
                       w-11
+                      shrink-0
                       items-center
                       justify-center
                       rounded-full
@@ -269,6 +283,8 @@ export default function WhyChooseISACO() {
                     dir="rtl"
                     className="
                       mt-3
+                      w-full
+                      break-words
                       text-xs
                       font-bold
                       leading-5
@@ -288,6 +304,8 @@ export default function WhyChooseISACO() {
                   <p
                     className="
                       mt-0.5
+                      w-full
+                      break-words
                       text-[9px]
                       font-semibold
                       leading-4
@@ -314,7 +332,9 @@ export default function WhyChooseISACO() {
                     className="
                       mx-auto
                       mt-2
+                      w-full
                       max-w-xs
+                      break-words
                       text-[9px]
                       leading-4
                       text-[#626c65]
@@ -334,7 +354,9 @@ export default function WhyChooseISACO() {
                     className="
                       mx-auto
                       mt-1
+                      w-full
                       max-w-xs
+                      break-words
                       text-[8px]
                       leading-3.5
                       text-[#7b827d]
