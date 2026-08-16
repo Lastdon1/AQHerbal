@@ -51,6 +51,10 @@ function SearchArea({
 }: SearchAreaProps) {
   const isUrdu = language === "ur";
 
+  /* ==========================================================
+     SEARCH RESULTS
+  ========================================================== */
+
   const query = normalizeText(search);
 
   const results = query
@@ -60,7 +64,9 @@ function SearchArea({
         ==================================================== */
 
         if (isUrdu) {
-          const urduName = normalizeText(product.nameUrdu || "");
+          const urduName = normalizeText(
+            product.nameUrdu || ""
+          );
 
           const urduDescription = normalizeText(
             product.descriptionUrdu || ""
@@ -76,11 +82,17 @@ function SearchArea({
            ENGLISH SEARCH
         ==================================================== */
 
-        const name = normalizeText(product.name || "");
+        const name = normalizeText(
+          product.name || ""
+        );
 
-        const slug = normalizeText(product.slug || "");
+        const slug = normalizeText(
+          product.slug || ""
+        );
 
-        const category = normalizeText(product.category || "");
+        const category = normalizeText(
+          product.category || ""
+        );
 
         const description = normalizeText(
           product.description || ""
@@ -100,17 +112,21 @@ function SearchArea({
       })
     : [];
 
+  /* ==========================================================
+     CLEAR SEARCH
+  ========================================================== */
+
   const clearSearch = () => {
     setSearch("");
   };
 
   return (
-    <div className="relative w-full min-w-0">
+    <div className="relative box-border w-full max-w-full min-w-0">
       {/* ======================================================
           SEARCH INPUT
       ======================================================= */}
 
-      <div className="relative min-w-0">
+      <div className="relative box-border w-full max-w-full min-w-0">
         <Search
           size={18}
           className={`pointer-events-none absolute top-1/2 z-10 -translate-y-1/2 text-gray-400 ${
@@ -121,18 +137,24 @@ function SearchArea({
         <input
           type="text"
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) =>
+            setSearch(event.target.value)
+          }
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
             }
           }}
-          placeholder={isUrdu ? "مصنوعات تلاش کریں" : "Search products"}
+          placeholder={
+            isUrdu
+              ? "مصنوعات تلاش کریں"
+              : "Search products"
+          }
           dir={isUrdu ? "rtl" : "ltr"}
           lang={isUrdu ? "ur" : "en"}
           autoComplete="off"
           spellCheck={false}
-          className={`h-12 w-full min-w-0 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-800 outline-none transition focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 ${
+          className={`box-border h-12 w-full max-w-full min-w-0 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-800 outline-none transition focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 ${
             isUrdu
               ? "pl-12 pr-11 text-right"
               : "pl-11 pr-12 text-left"
@@ -166,9 +188,13 @@ function SearchArea({
             top-full
             z-[200]
             mt-2
+            box-border
+            w-full
+            max-w-full
+            min-w-0
             max-h-[420px]
-            overflow-y-auto
             overflow-x-hidden
+            overflow-y-auto
             rounded-2xl
             border
             border-gray-100
@@ -182,7 +208,9 @@ function SearchArea({
               <div
                 dir={isUrdu ? "rtl" : "ltr"}
                 className={`px-3 pb-2 pt-1 text-xs text-gray-400 ${
-                  isUrdu ? "text-right" : "text-left"
+                  isUrdu
+                    ? "text-right"
+                    : "text-left"
                 }`}
               >
                 {results.length}{" "}
@@ -200,7 +228,10 @@ function SearchArea({
                   onClick={onProductClick}
                   className="
                     flex
+                    w-full
+                    max-w-full
                     min-w-0
+                    box-border
                     items-center
                     gap-3
                     rounded-xl
@@ -229,7 +260,7 @@ function SearchArea({
                     />
                   </div>
 
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 overflow-hidden">
                     <p
                       dir="rtl"
                       className="
@@ -264,17 +295,33 @@ function SearchArea({
                         text-gray-500
                       "
                     >
-                      Rs. {Number(product.price).toLocaleString()}
+                      Rs.{" "}
+                      {Number(
+                        product.price
+                      ).toLocaleString()}
                     </p>
                   </div>
                 </Link>
               ))}
             </>
           ) : (
-            <div className="px-4 py-9 text-center">
+            <div
+              className="
+                box-border
+                w-full
+                max-w-full
+                px-4
+                py-9
+                text-center
+              "
+            >
               <p
                 dir={isUrdu ? "rtl" : "ltr"}
-                className="text-sm font-semibold text-gray-700"
+                className="
+                  text-sm
+                  font-semibold
+                  text-gray-700
+                "
               >
                 {isUrdu
                   ? "کوئی مصنوعات نہیں ملیں"
@@ -298,16 +345,18 @@ export default function Header() {
   const [language, setLanguage] =
     useState<SearchLanguage>("en");
 
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchOpen, setSearchOpen] =
+    useState(false);
 
   /* ==========================================================
      LOAD SAVED LANGUAGE
   ========================================================== */
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem(
-      "site-language"
-    ) as SearchLanguage | null;
+    const savedLanguage =
+      localStorage.getItem(
+        "site-language"
+      ) as SearchLanguage | null;
 
     if (
       savedLanguage === "en" ||
@@ -316,7 +365,9 @@ export default function Header() {
       setLanguage(savedLanguage);
     }
 
-    const handleLanguageChange = (event: Event) => {
+    const handleLanguageChange = (
+      event: Event
+    ) => {
       const customEvent =
         event as CustomEvent<SearchLanguage>;
 
@@ -324,7 +375,10 @@ export default function Header() {
         customEvent.detail === "en" ||
         customEvent.detail === "ur"
       ) {
-        setLanguage(customEvent.detail);
+        setLanguage(
+          customEvent.detail
+        );
+
         setSearch("");
       }
     };
@@ -358,7 +412,9 @@ export default function Header() {
   return (
     <header
       className="
+        box-border
         w-full
+        max-w-full
         min-w-0
         overflow-x-hidden
         border-b
@@ -372,6 +428,7 @@ export default function Header() {
       <div
         className="
           mx-auto
+          box-border
           flex
           min-h-[82px]
           w-full
@@ -514,13 +571,16 @@ export default function Header() {
               mx-auto
               w-full
               max-w-2xl
+              min-w-0
             "
           >
             <SearchArea
               search={search}
               setSearch={setSearch}
               language={language}
-              onProductClick={handleProductClick}
+              onProductClick={
+                handleProductClick
+              }
             />
           </div>
         </div>
@@ -562,7 +622,9 @@ export default function Header() {
           >
             <User size={19} />
 
-            <span>Login</span>
+            <span>
+              Login
+            </span>
           </Link>
 
           {/* =================================================
@@ -645,7 +707,9 @@ export default function Header() {
           <button
             type="button"
             onClick={() =>
-              setSearchOpen((value) => !value)
+              setSearchOpen(
+                (value) => !value
+              )
             }
             aria-label="Search"
             className="
@@ -679,7 +743,9 @@ export default function Header() {
       {searchOpen && (
         <div
           className="
+            box-border
             w-full
+            max-w-full
             min-w-0
             overflow-hidden
             border-t
@@ -690,12 +756,24 @@ export default function Header() {
             md:hidden
           "
         >
-          <SearchArea
-            search={search}
-            setSearch={setSearch}
-            language={language}
-            onProductClick={handleProductClick}
-          />
+          <div
+            className="
+              box-border
+              w-full
+              max-w-full
+              min-w-0
+              overflow-hidden
+            "
+          >
+            <SearchArea
+              search={search}
+              setSearch={setSearch}
+              language={language}
+              onProductClick={
+                handleProductClick
+              }
+            />
+          </div>
         </div>
       )}
     </header>
