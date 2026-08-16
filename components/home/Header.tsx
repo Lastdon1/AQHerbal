@@ -556,10 +556,8 @@ export default function Header() {
 
           <div
             className="
-              hidden
               leading-tight
-              sm:block
-            "
+              "
           >
             <p
               className="
