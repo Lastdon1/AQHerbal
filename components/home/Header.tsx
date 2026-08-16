@@ -528,7 +528,7 @@ export default function Header() {
 
         <Link
           href="/"
-          aria-label="AQ Herbal Home"
+          aria-label="ISACO Home"
           className="
             flex
             shrink-0
@@ -536,10 +536,9 @@ export default function Header() {
             gap-3
           "
         >
-
           <Image
             src="/logos/logo.webp"
-            alt="AQ Herbal"
+            alt="ISACO"
             width={150}
             height={60}
             priority
@@ -551,7 +550,9 @@ export default function Header() {
             "
           />
 
-          {/* Brand Text */}
+          {/* ==================================================
+              ISACO BRAND TEXT
+          =================================================== */}
 
           <div
             className="
@@ -560,7 +561,6 @@ export default function Header() {
               sm:block
             "
           >
-
             <p
               className="
                 text-lg
@@ -568,23 +568,47 @@ export default function Header() {
                 text-green-800
               "
             >
-              AQ Herbal
+              ISACO
             </p>
 
             <p
+              dir="rtl"
+              lang="ur"
               className="
-                max-w-[210px]
-                text-[10px]
+                mt-0.5
+                text-[13px]
+                font-semibold
+                leading-6
+                text-green-800
+              "
+            >
+              آئی ساکو
+            </p>
+
+            <p
+              dir="rtl"
+              lang="ur"
+              className="
+                text-[9px]
                 leading-4
                 text-gray-500
               "
             >
-              Inspired by Tibb-e-Nabawi (ﷺ),
-              Trusted for Wellness.
+              مرحوم حکیم عبدالعلی خان رحمہ اللہ علی
             </p>
 
+            <p
+              dir="rtl"
+              lang="ur"
+              className="
+                text-[9px]
+                leading-4
+                text-gray-500
+              "
+            >
+              بانیِ مشرقی دواخانہ
+            </p>
           </div>
-
         </Link>
 
         {/* ==================================================
